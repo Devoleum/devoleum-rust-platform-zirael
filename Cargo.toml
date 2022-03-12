@@ -1,0 +1,16 @@
+[package]
+name = "devoleum-rust-platform-zirael"
+version = "0.1.0"
+authors = ["Lorenzo Zaccagnini <devoleum@tutanota.com>, Elisa Romondia <devoleum@tutanota.com>"]
+edition = "2018"
+license = "MIT"
+
+[dependencies]
+actix = "0.11.0"
+actix-web = "3.3.2"
+actix-rt = "1.1.1"
+
+mongodb = { version = "2.1.0", default-features = false, features = ["sync"] }
+bson = "2.1.0"
+serde = "1.0.136"
+futures = "0.3.19"
