@@ -11,6 +11,15 @@ const strings = new LocalizedStrings({
   },
 });
 
+export interface IProps {
+  label: string;
+  text: string;
+  img: string;
+  img_off: string;
+  link?: boolean;
+  verifyLink?: string;
+}
+
 const Achievement = ({
   label,
   text,
@@ -18,7 +27,7 @@ const Achievement = ({
   img_off,
   link = true,
   verifyLink,
-}) => {
+}: IProps) => {
   if (!text) return null;
   return (
     <Row style={{ marginBottom: "15px" }}>

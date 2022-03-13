@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { Row, Col, Image, ListGroup } from "react-bootstrap";
 import Meta from "../../components/Meta";
 import Message from "../../components/Message";
 import Loader from "../../components/Loader";
 import { listHistoryDetails } from "../../actions/historyActions";
 import { listSteps } from "../../actions/stepActions";
-import Product from "../../components/Product";
+import Product from "../../components/Product/Product";
 import LocalizedStrings from "react-localization";
-import QRCode from "qrcode.react";
+import QRCode from "react-qr-code";
 
 
 import Logo from "../../imgs/icon.png";
+import { IStep } from "../../models/ISteps";
 
 const strings = new LocalizedStrings({
   en: {
@@ -29,14 +30,14 @@ const strings = new LocalizedStrings({
   },
 });
 
-const HistoryScreen = () => {
+const HistoryScreen: React.FC = () => {
   const dispatch = useDispatch();
   let { id } = useParams();
-  const historyDetails = useSelector((state) => state.historyDetails);
+  const historyDetails = useSelector((state: RootStateOrAny) => state.historyDetails);
   const { loading, error, devoleumHistory } = historyDetails;
   console.log("devoleumHistory: ", devoleumHistory);
 
-  const stepList = useSelector((state) => state.stepList);
+  const stepList = useSelector((state: RootStateOrAny) => state.stepList);
   const { steps } = stepList;
 
   useEffect(() => {
@@ -56,9 +57,9 @@ const HistoryScreen = () => {
 
     if (!devoleumHistory._id || devoleumHistory._id !== old_id) {
       dispatch(listHistoryDetails(id, true));
-      dispatch(listSteps(old_id, "", 1));
+      dispatch(listSteps(old_id));
     }
-  }, [dispatch, match]);
+  }, [dispatch]);
 
   return (
     <>
@@ -117,10 +118,8 @@ const HistoryScreen = () => {
                       )}
 
                       <br />
-                      <div align="center">
+                      <div style={{textAlign: 'center'}}>
                         <QRCode
-                          logo={Logo}
-                          logoWidth={60}
                           size={140}
                           bgColor="#84B62B"
                           fgColor="#014940"
@@ -135,7 +134,7 @@ const HistoryScreen = () => {
                 </Col>
               </Row>
               <h3>{strings.title}</h3>
-              {steps.map((devoleumStep) => (
+              {steps.map((devoleumStep: IStep) => (
                 <>
                   {devoleumStep.data && (
                     <Link

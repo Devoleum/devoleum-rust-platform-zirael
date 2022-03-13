@@ -1,7 +1,13 @@
 import React from "react";
 import { Helmet } from "react-helmet";
 
-const Meta = ({ title, description, keywords, img_url }) => {
+/* export interface IProps {
+  title: string;
+  description: string;
+  img_url: string
+} */
+
+const Meta = ({ title, description, img_url }) => {
   return (
     <Helmet>
       <title>{title}</title>
@@ -24,6 +30,7 @@ Meta.defaultProps = {
     "The authentic storytelling of your supply chain using Blockchain and and Data Science.",
   keywords:
     "devoleum, blockchain, supply chain, ethereum, food, artificial intelligence",
+    img_url: "https://i.ibb.co/tBrkxzM/Devoleum-Logo-1.png"
 };
 
 export default Meta;

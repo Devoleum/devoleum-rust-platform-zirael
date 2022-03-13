@@ -1,6 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import LocalizedStrings from "react-localization";
+import { IHistory } from "../../models/IHistory";
+import { IStep } from "../../models/ISteps";
+import { ILod } from "../../models/ILod";
 
 const strings = new LocalizedStrings({
   en: {
@@ -13,12 +16,16 @@ const strings = new LocalizedStrings({
   },
 });
 
-const imgStyle = { width: "200px", height: "200px", objectFit: "cover" };
-const Product = ({ product, fullText = false }) => {
+export interface IProps {
+  product: IHistory | IStep;
+  fullText?: boolean;
+}
+
+const Product: React.FC<IProps> = ({ product, fullText = false }: IProps) => {
   return (
     <div className="card_container">
       <div className="card_image">
-        <img src={product.data.thumbnail} style={imgStyle} />
+        <img src={product.data.thumbnail} style={{ width: "200px", height: "200px", objectFit: "cover" }} />
       </div>
       <div className="card_text">
         <div className="card_text_title">{product.data.name}</div>

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { Row, Col, Image, ListGroup } from "react-bootstrap";
 import Meta from "../../components/Meta";
 import Message from "../../components/Message";
 import Loader from "../../components/Loader";
 import { listStepDetails } from "../../actions/stepActions";
 import LocalizedStrings from "react-localization";
-import Achievement from "../../components/Achievement";
+import Achievement from "../../components/Achievement/Achievement";
 //images
 import eth_main_off from "../../imgs/eth_main_off.jpg";
 import eth_main_on from "../../imgs/eth_main_off.jpg";
@@ -40,7 +40,7 @@ const StepScreen = () => {
   const dispatch = useDispatch();
   let { stepId } = useParams();
 
-  const stepDetails = useSelector((state) => state.stepDetails);
+  const stepDetails = useSelector((state: RootStateOrAny) => state.stepDetails);
   const { loading, error, devoleumStep } = stepDetails;
 
   useEffect(() => {

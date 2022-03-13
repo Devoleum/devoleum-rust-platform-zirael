@@ -7,7 +7,7 @@ import Loader from "../../components/Loader";
 import FormContainer from "../../components/FormContainer";
 import returnMatchLang from "../../utils/returnMatchLang";
 import { uriCorrection, validationJson } from "../../utils/validationJson";
-import Product from "../../components/Product";
+import Product from "../../components/Product/Product";
 
 import {
   listHistoriesByMerchant,

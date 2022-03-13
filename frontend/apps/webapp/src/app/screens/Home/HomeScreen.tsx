@@ -1,18 +1,19 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import Product from "../../components/Product";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
+import Product from "../../components/Product/Product";
 import Message from "../../components/Message";
 import Loader from "../../components/Loader";
 import Meta from "../../components/Meta";
 import { listPublicHistories } from "../../actions/historyActions";
 import LocalizedStrings from "react-localization";
+import { IHistory } from "../../models/IHistory";
 
-const HomeScreen = () => {
+const HomeScreen: React.FC = () => {
 
   const dispatch = useDispatch();
 
-  const historyPublicList = useSelector((state) => state.historyPublicList);
+  const historyPublicList = useSelector((state: RootStateOrAny) => state.historyPublicList);
   const { loading, error, histories } = historyPublicList;
 
   useEffect(() => {
@@ -52,7 +53,7 @@ const HomeScreen = () => {
         <Message variant="danger">{error}</Message>
       ) : (
         <>
-          {histories.map((devoleumHistory) => (
+          {histories.map((devoleumHistory: IHistory) => (
             <>
               {devoleumHistory.data && (
                 <Link
