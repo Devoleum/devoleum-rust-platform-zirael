@@ -1,13 +1,13 @@
-import React from "react";
-import LocalizedStrings from "react-localization";
-import { Row, Col, Image } from "react-bootstrap";
+import React from 'react';
+import LocalizedStrings from 'react-localization';
+import { Row, Col, Image } from 'react-bootstrap';
 
 const strings = new LocalizedStrings({
   en: {
-    missing: "Achievement missing",
+    missing: 'Achievement missing',
   },
   it: {
-    missing: "Achievement da conquistare!",
+    missing: 'Achievement da conquistare!',
   },
 });
 
@@ -30,20 +30,20 @@ const Achievement = ({
 }: IProps) => {
   if (!text) return null;
   return (
-    <Row style={{ marginBottom: "15px" }}>
+    <Row style={{ marginBottom: '15px' }}>
       <Col fluid={true} xs="auto" md="auto">
         {text ? (
-          <Image src={img} style={{ width: "64px" }} />
+          <Image src={img} style={{ width: '64px' }} />
         ) : (
-          <Image src={img_off} style={{ width: "64px" }} />
+          <Image src={img_off} style={{ width: '64px' }} />
         )}
       </Col>
       <Col align="left">
         <strong
           style={{
-            textTransform: "capitalize",
-            fontWeight: "bold",
-            color: "black",
+            textTransform: 'capitalize',
+            fontWeight: 'bold',
+            color: 'black',
           }}
         >
           {label}
@@ -66,7 +66,7 @@ const Achievement = ({
               ) : (
                 <p
                   style={{
-                    wordBreak: "break-word",
+                    wordBreak: 'break-word',
                   }}
                 >
                   {text}

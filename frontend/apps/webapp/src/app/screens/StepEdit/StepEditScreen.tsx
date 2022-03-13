@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Form, Button, Row, Col } from 'react-bootstrap'
 import FormContainer from '../../components/FormContainer'
-import { useDispatch, useSelector } from 'react-redux'
+import { RootStateOrAny, useDispatch, useSelector } from 'react-redux'
 import Message from '../../components/Message'
 import Loader from '../../components/Loader'
 import { listStepDetails, updateStep } from '../../actions/stepActions'
@@ -21,10 +21,10 @@ const StepEditScreen = () => {
 
   const dispatch = useDispatch()
 
-  const stepDetails = useSelector((state) => state.stepDetails)
+  const stepDetails = useSelector((state: RootStateOrAny) => state.stepDetails)
   const { loading, error, devoleumStep } = stepDetails
 
-  const stepUpdate = useSelector((state) => state.stepUpdate)
+  const stepUpdate = useSelector((state: RootStateOrAny) => state.stepUpdate)
   const {
     loading: loadingUpdate,
     error: errorUpdate,
@@ -47,7 +47,7 @@ const StepEditScreen = () => {
     }
   }, [dispatch, history, stepId, devoleumStep, successUpdate])
 
-  const submitHandler = (e) => {
+  const submitHandler = (e: any) => {
     e.preventDefault()
     dispatch(
       updateStep({

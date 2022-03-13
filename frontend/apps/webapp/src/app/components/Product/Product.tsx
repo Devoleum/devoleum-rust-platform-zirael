@@ -17,7 +17,7 @@ const strings = new LocalizedStrings({
 });
 
 export interface IProps {
-  product: IHistory | IStep;
+  product: IHistory | IStep | any;
   fullText?: boolean;
 }
 

@@ -1,5 +1,5 @@
 import { Story, Meta } from '@storybook/react';
-import { StepScreen } from './StepScreen';
+import StepScreen from './StepScreen';
 
 export default {
   component: StepScreen,

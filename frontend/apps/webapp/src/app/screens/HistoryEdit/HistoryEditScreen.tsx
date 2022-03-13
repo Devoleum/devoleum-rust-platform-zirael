@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import Message from "../../components/Message";
 import Loader from "../../components/Loader";
 import FormContainer from "../../components/FormContainer";
@@ -23,11 +23,11 @@ const HistoryEditScreen = () => {
 
   const dispatch = useDispatch();
 
-  const historyDetails = useSelector((state) => state.historyDetails);
+  const historyDetails = useSelector((state: RootStateOrAny) => state.historyDetails);
   const { loading, error, devoleumHistory } = historyDetails;
   console.log(devoleumHistory);
 
-  const historyUpdate = useSelector((state) => state.historyUpdate);
+  const historyUpdate = useSelector((state: RootStateOrAny) => state.historyUpdate);
   const {
     loading: loadingUpdate,
     error: errorUpdate,
@@ -50,7 +50,7 @@ const HistoryEditScreen = () => {
     }
   }, [dispatch, history, historyId, devoleumHistory, successUpdate]);
 
-  const submitHandler = (e) => {
+  const submitHandler = (e: any) => {
     e.preventDefault();
     dispatch(
       updateHistory({
@@ -111,7 +111,6 @@ const HistoryEditScreen = () => {
       <StepListScreen
         historyId={historyId}
         history={history}
-        page={pageNumber}
       />
     </>
   );
