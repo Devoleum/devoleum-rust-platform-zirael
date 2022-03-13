@@ -1,7 +1,5 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import { Provider } from 'react-redux'
-import store from './store'
 
 import { Container } from 'react-bootstrap'
 import Header from './components/Header'
@@ -22,7 +20,6 @@ import StepEditScreen from './screens/StepEditScreen'
 
 const App = () => {
   return (
-    <Provider store={store}>
     <Router>
       <Header />
       <main className='py-3'>
@@ -56,7 +53,6 @@ const App = () => {
       </main>
       <Footer />
     </Router>
-    </Provider>
   )
 }
 
