@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import { LinkContainer } from "react-router-bootstrap";
 import { Form, Table, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import Message from "../components/Message";
-import Loader from "../components/Loader";
-import returnMatchLang from "../utils/returnMatchLang";
-import Product from "../components/Product";
-import FormContainer from "../components/FormContainer";
-import { listSteps, deleteStep, createStep } from "../actions/stepActions";
-import { STEP_CREATE_RESET } from "../constants/stepConstants";
-import { uriCorrection, validationJson } from "../utils/validationJson";
+import Message from "../../components/Message";
+import Loader from "../../components/Loader";
+import returnMatchLang from "../../utils/returnMatchLang";
+import Product from "../../components/Product";
+import FormContainer from "../../components/FormContainer";
+import { listSteps, deleteStep, createStep } from "../../actions/stepActions";
+import { STEP_CREATE_RESET } from "../../constants/stepConstants";
+import { uriCorrection, validationJson } from "../../utils/validationJson";
 
 const StepListScreen = ({ history, historyId }) => {
   const [uri, setUri] = useState("");

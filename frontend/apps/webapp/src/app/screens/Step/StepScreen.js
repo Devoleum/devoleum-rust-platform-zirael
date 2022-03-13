@@ -2,26 +2,26 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Image, ListGroup } from "react-bootstrap";
-import Meta from "../components/Meta";
-import Message from "../components/Message";
-import Loader from "../components/Loader";
-import { listStepDetails } from "../actions/stepActions";
+import Meta from "../../components/Meta";
+import Message from "../../components/Message";
+import Loader from "../../components/Loader";
+import { listStepDetails } from "../../actions/stepActions";
 import LocalizedStrings from "react-localization";
-import Achievement from "../components/Achievement";
+import Achievement from "../../components/Achievement";
 //images
-import eth_main_off from "../imgs/eth_main_off.jpg";
-import eth_main_on from "../imgs/eth_main_off.jpg";
-import matic_on from "../imgs/matic_on.jpg";
-import eth_test_off from "../imgs/eth_test_off.jpg";
-import eth_test_on from "../imgs/eth_test_on.jpg";
-import algo_main_off from "../imgs/algo_main_off.jpg";
-import algo_main_on from "../imgs/algo_main_on.jpg";
-import algo_test_off from "../imgs/algo_test_off.jpg";
-import algo_test_on from "../imgs/algo_test_on.jpg";
-import git_off from "../imgs/git_off.jpg";
-import git_on from "../imgs/git_on.jpg";
-import hash_off from "../imgs/hash_off.jpg";
-import hash_on from "../imgs/hash_on.jpg";
+import eth_main_off from "../../imgs/eth_main_off.jpg";
+import eth_main_on from "../../imgs/eth_main_off.jpg";
+import matic_on from "../../imgs/matic_on.jpg";
+import eth_test_off from "../../imgs/eth_test_off.jpg";
+import eth_test_on from "../../imgs/eth_test_on.jpg";
+import algo_main_off from "../../imgs/algo_main_off.jpg";
+import algo_main_on from "../../imgs/algo_main_on.jpg";
+import algo_test_off from "../../imgs/algo_test_off.jpg";
+import algo_test_on from "../../imgs/algo_test_on.jpg";
+import git_off from "../../imgs/git_off.jpg";
+import git_on from "../../imgs/git_on.jpg";
+import hash_off from "../../imgs/hash_off.jpg";
+import hash_on from "../../imgs/hash_on.jpg";
 
 const strings = new LocalizedStrings({
   en: {

@@ -2,19 +2,19 @@ import React, { useState, useEffect } from "react";
 import { LinkContainer } from "react-router-bootstrap";
 import { Form, Table, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import Message from "../components/Message";
-import Loader from "../components/Loader";
-import FormContainer from "../components/FormContainer";
-import returnMatchLang from "../utils/returnMatchLang";
-import { uriCorrection, validationJson } from "../utils/validationJson";
-import Product from "../components/Product";
+import Message from "../../components/Message";
+import Loader from "../../components/Loader";
+import FormContainer from "../../components/FormContainer";
+import returnMatchLang from "../../utils/returnMatchLang";
+import { uriCorrection, validationJson } from "../../utils/validationJson";
+import Product from "../../components/Product";
 
 import {
   listHistoriesByMerchant,
   deleteHistory,
   createHistory,
-} from "../actions/historyActions";
-import { HISTORY_CREATE_RESET } from "../constants/historyConstants";
+} from "../../actions/historyActions";
+import { HISTORY_CREATE_RESET } from "../../constants/historyConstants";
 import { useNavigate } from "react-router-dom";
 
 const HistoryListScreen = () => {

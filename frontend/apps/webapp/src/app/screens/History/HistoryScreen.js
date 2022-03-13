@@ -2,17 +2,17 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Image, ListGroup } from "react-bootstrap";
-import Meta from "../components/Meta";
-import Message from "../components/Message";
-import Loader from "../components/Loader";
-import { listHistoryDetails } from "../actions/historyActions";
-import { listSteps } from "../actions/stepActions";
-import Product from "../components/Product";
+import Meta from "../../components/Meta";
+import Message from "../../components/Message";
+import Loader from "../../components/Loader";
+import { listHistoryDetails } from "../../actions/historyActions";
+import { listSteps } from "../../actions/stepActions";
+import Product from "../../components/Product";
 import LocalizedStrings from "react-localization";
 import QRCode from "qrcode.react";
 
 
-import Logo from "../imgs/icon.png";
+import Logo from "../../imgs/icon.png";
 
 const strings = new LocalizedStrings({
   en: {

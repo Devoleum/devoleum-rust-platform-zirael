@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import Message from "../components/Message";
-import Loader from "../components/Loader";
-import FormContainer from "../components/FormContainer";
-import ItemInfo from "../components/ItemInfo";
-import { listHistoryDetails, updateHistory } from "../actions/historyActions";
-import { HISTORY_UPDATE_RESET } from "../constants/historyConstants";
-import StepListScreen from "./StepListScreen";
+import Message from "../../components/Message";
+import Loader from "../../components/Loader";
+import FormContainer from "../../components/FormContainer";
+import ItemInfo from "../../components/ItemInfo";
+import { listHistoryDetails, updateHistory } from "../../actions/historyActions";
+import { HISTORY_UPDATE_RESET } from "../../constants/historyConstants";
+import StepListScreen from "../StepList/StepListScreen";
 
 
 

@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, Image, ListGroup } from "react-bootstrap";
-import Meta from "../components/Meta";
+import Meta from "../../components/Meta";
 import { useDispatch, useSelector } from "react-redux";
-import Message from "../components/Message";
-import Loader from "../components/Loader";
+import Message from "../../components/Message";
+import Loader from "../../components/Loader";
 import { Link, useLocation, useHistory, useNavigate } from "react-router-dom";
-import Product from "../components/Product";
+import Product from "../../components/Product";
 
-import { listHistoriesByMerchant } from "../actions/historyActions";
-import { getMerchantDetails } from "../actions/userActions";
+import { listHistoriesByMerchant } from "../../actions/historyActions";
+import { getMerchantDetails } from "../../actions/userActions";
 import LocalizedStrings from "react-localization";
 
 const MerchantScreen = () => {

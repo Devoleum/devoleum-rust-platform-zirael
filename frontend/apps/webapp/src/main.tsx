@@ -1,6 +1,6 @@
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom';
-import store from './store'
+import store from './app/store'
 
 import App from './app/App';
 import { Provider } from 'react-redux';

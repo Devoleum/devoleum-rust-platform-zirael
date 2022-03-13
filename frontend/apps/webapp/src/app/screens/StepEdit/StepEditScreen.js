@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { Form, Button, Row, Col } from 'react-bootstrap'
-import FormContainer from '../components/FormContainer'
+import FormContainer from '../../components/FormContainer'
 import { useDispatch, useSelector } from 'react-redux'
-import Message from '../components/Message'
-import Loader from '../components/Loader'
-import { listStepDetails, updateStep } from '../actions/stepActions'
-import { STEP_UPDATE_RESET } from '../constants/stepConstants'
-import ItemInfo from "../components/ItemInfo";
+import Message from '../../components/Message'
+import Loader from '../../components/Loader'
+import { listStepDetails, updateStep } from '../../actions/stepActions'
+import { STEP_UPDATE_RESET } from '../../constants/stepConstants'
+import ItemInfo from "../../components/ItemInfo";
 
 
 const StepEditScreen = () => {
