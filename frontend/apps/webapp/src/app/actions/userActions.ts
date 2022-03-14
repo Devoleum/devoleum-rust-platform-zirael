@@ -34,7 +34,7 @@ export const getMerchantDetails = (id: string) => async (dispatch: any) => {
   try {
     dispatch({ type: MERCHANT_DETAILS_REQUEST })
 
-    let { data } = await axios.get(`/api/users/merchant/${id}`)
+    let { data } = await axios.get(`http://localhost:8080/api/users/merchant/${id}`)
     let temp = {uri: data};
     data = await getOnce(temp);
 

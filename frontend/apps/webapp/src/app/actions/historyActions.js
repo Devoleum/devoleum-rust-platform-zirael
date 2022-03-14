@@ -62,11 +62,14 @@ export const listPublicHistories = () => async (
   try {
     dispatch({ type: HISTORY_PUBLICLIST_REQUEST })
 
-    let { data } = await axios.get(
-      `/api/histories/public`
+    let data = await axios.get(
+      `http://localhost:8080/api/histories/public`
     )
-    data.histories = await getIterate(data.histories, true);
-    console.log("histories: ", data.histories)
+    data = data.data;
+    console.log("histories: ", data)
+    data = await getIterate(data, true);
+    console.log("histories2: ", data)
+
     dispatch({
       type: HISTORY_PUBLICLIST_SUCCESS,
       payload: data,

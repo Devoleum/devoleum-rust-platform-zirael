@@ -1,4 +1,6 @@
-const uriCorrection = (uri) => {
+import { ILod } from "../models/ILod";
+
+const uriCorrection = (uri: string) => {
   let correctUri = uri.replace(
     "https://github.com/",
     "https://raw.githubusercontent.com/"
@@ -7,7 +9,7 @@ const uriCorrection = (uri) => {
   return correctUri;
 }
 
-const validationJson = (localizedData, fetchedData, section, errorMsgCallback) => {
+const validationJson = (localizedData: ILod, fetchedData: ILod, section: string, errorMsgCallback: any) => {
   if (!localizedData.name) {
     errorMsgCallback("Not a valid JSON section, please insert " + section);
     return false;

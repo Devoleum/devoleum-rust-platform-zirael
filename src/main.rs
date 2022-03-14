@@ -1,44 +1,74 @@
+mod models;
+use actix_cors::Cors;
 use actix_files::Files;
+use actix_web::{get, post, web, App, HttpResponse, HttpServer};
+use models::{histories::History, users::User};
+use mongodb::{bson::doc, options::IndexOptions, Client, Collection, IndexModel};
 
-mod controller;
-mod service;
+const DB_NAME: &str = "devoleumdb";
 
-
-pub struct ServiceContainer {
-    user: service::UserService,
-}
-
-impl ServiceContainer {
-    pub fn new(user: service::UserService) -> Self {
-        ServiceContainer { user }
+/// Gets the merchant with the supplied id.
+#[get("/api/users/merchant/{id}")]
+async fn get_merchant(client: web::Data<Client>, id: web::Path<String>) -> HttpResponse {
+    let id = id.into_inner();
+    let collection: Collection<User> = client.database(DB_NAME).collection("users");
+    match collection
+        .find_one(
+            doc! { "_id": bson::oid::ObjectId::parse_str(&id).unwrap() },
+            None,
+        )
+        .await
+    {
+        Ok(Some(user)) => HttpResponse::Ok().json(user.uri),
+        Ok(None) => HttpResponse::NotFound().body(format!("No user found with id {}", id)),
+        Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
     }
 }
 
-pub struct AppState {
-    service_container: ServiceContainer,
+/// Gets the merchant with the supplied id.
+#[get("/api/histories/public")]
+async fn get_public_histories(client: web::Data<Client>) -> HttpResponse {
+    use futures_util::StreamExt;
+    let collection: Collection<History> = client.database(DB_NAME).collection("histories");
+    let mut cursor = collection.find(doc! {"public": true}, None).await.unwrap();
+    let mut results = Vec::new();
+    while let Some(result) = cursor.next().await {
+        match result {
+            Ok(document) => {
+                results.push(document);
+            }
+            _ => {
+                return HttpResponse::InternalServerError().finish();
+            }
+        }
+    }
+    HttpResponse::Ok().json(results)
 }
 
-#[actix_rt::main]
+#[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    use actix_web::{web, App, HttpServer};
+    let uri = std::env::var("MONGODB_URI").unwrap_or_else(|_| "mongodb://localhost:27017".into());
 
-    let client_options =
-        mongodb::options::ClientOptions::parse("mongodb://localhost:27017").unwrap();
-    let client = mongodb::sync::Client::with_options(client_options).unwrap();
-    let db = client.database("devoleumdb");
-
-    let histories = db.collection("histories");
-
+    let client = Client::with_uri_str(uri).await.expect("failed to connect");
     HttpServer::new(move || {
-        let service_container =
-            ServiceContainer::new(service::UserService::new(histories.clone()));
+        let cors = Cors::permissive()
+            .allow_any_origin()
+            .allow_any_header()
+            .allow_any_method();
+        println!("Starting server");
 
         App::new()
-            .data(AppState { service_container })
-            .route("/api/histories/public", web::get().to(controller::get))
-            .service(Files::new("/", "./frontend/build/").index_file("index.html").show_files_listing())
+            .app_data(web::Data::new(client.clone()))
+            .wrap(cors)
+            .service(get_merchant)
+            .service(get_public_histories)
+            .service(
+                Files::new("/", "./frontend/build/")
+                    .index_file("index.html")
+                    .show_files_listing(),
+            )
     })
-    .bind("0.0.0.0:3000")?
+    .bind(("127.0.0.1", 8080))?
     .run()
     .await
 }

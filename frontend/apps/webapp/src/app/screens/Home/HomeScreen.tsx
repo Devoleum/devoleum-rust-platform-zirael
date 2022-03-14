@@ -18,6 +18,8 @@ const HomeScreen: React.FC = () => {
 
   useEffect(() => {
     dispatch(listPublicHistories());
+    console.log("histories hp: ", histories);
+    
   }, [dispatch]);
 
   return (
@@ -53,7 +55,7 @@ const HomeScreen: React.FC = () => {
         <Message variant="danger">{error}</Message>
       ) : (
         <>
-          {histories.map((devoleumHistory: IHistory) => (
+          {histories && histories.map((devoleumHistory: IHistory) => (
             <>
               {devoleumHistory.data && (
                 <Link

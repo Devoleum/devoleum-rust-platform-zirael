@@ -41,7 +41,8 @@
       "executor": "@nrwl/web:dev-server",
       "options": {
         "buildTarget": "webapp:build",
-        "hmr": true
+        "hmr": true,
+        "port": 5000
       },
       "configurations": {
         "production": {

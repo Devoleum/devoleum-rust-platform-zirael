@@ -17,11 +17,12 @@ import {
 import { HISTORY_CREATE_RESET } from "../../constants/historyConstants";
 import { useNavigate } from "react-router-dom";
 import { IHistory } from "../../models/IHistory";
+import { ILod } from "../../models/ILod";
 
 const HistoryListScreen = () => {
   const [uri, setUri] = useState("");
   const [name, setName] = useState("");
-  const [item, setItem] = useState(null);
+  const [item, setItem] = useState();
   const [fetchedData, setFetchedData] = useState(null);
   const [category, setCategory] = useState("");
   const [errorPost, setErrorPost] = useState(null);
@@ -30,19 +31,19 @@ const HistoryListScreen = () => {
   const dispatch = useDispatch();
 
   const historyListByMerchant = useSelector(
-    (state: RootStateOrAny) => state.historyListByMerchant
+    (state) => state.historyListByMerchant
   );
 
   const { loading, error, histories } = historyListByMerchant;
 
-  const historyDelete = useSelector((state: RootStateOrAny) => state.historyDelete);
+  const historyDelete = useSelector((state) => state.historyDelete);
   const {
     loading: loadingDelete,
     error: errorDelete,
     success: successDelete,
   } = historyDelete;
 
-  const historyCreate = useSelector((state: RootStateOrAny) => state.historyCreate);
+  const historyCreate = useSelector((state) => state.historyCreate);
   const {
     loading: loadingCreate,
     error: errorCreate,
@@ -50,7 +51,7 @@ const HistoryListScreen = () => {
     devoleumHistory: createdHistory,
   } = historyCreate;
 
-  const userLogin = useSelector((state: RootStateOrAny) => state.userLogin);
+  const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
   useEffect(() => {
@@ -74,7 +75,7 @@ const HistoryListScreen = () => {
     createdHistory,
   ]);
 
-  const deleteHandler = (id: string) => {
+  const deleteHandler = (id) => {
     if (window.confirm("Are you sure")) {
       dispatch(deleteHistory(id));
     }
@@ -90,7 +91,7 @@ const HistoryListScreen = () => {
     setName(localizedData.name);
   };
 
-  const submitHandler = (e: any) => {
+  const submitHandler = (e) => {
     e.preventDefault();
     if (!validationJson(item, fetchedData, "history", errorPost)) return;
     dispatch(
@@ -131,7 +132,7 @@ const HistoryListScreen = () => {
                 </tr>
               </thead>
               <tbody>
-                {histories.map((devoleumHistory: IHistory) => (
+                {histories.map((devoleumHistory) => (
                   <tr key={devoleumHistory._id}>
                     <td>{devoleumHistory.name}</td>
                     <td>{devoleumHistory.category}</td>
