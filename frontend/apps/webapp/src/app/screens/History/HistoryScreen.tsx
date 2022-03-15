@@ -55,7 +55,7 @@ const HistoryScreen: React.FC = () => {
       }
     })();
 
-    if (!devoleumHistory._id || devoleumHistory._id !== old_id) {
+    if (!devoleumHistory._id["$oid"] || devoleumHistory._id["$oid"] !== old_id) {
       dispatch(listHistoryDetails(id, true));
       dispatch(listSteps(old_id));
     }
@@ -72,7 +72,7 @@ const HistoryScreen: React.FC = () => {
         <Message variant="danger">{error}</Message>
       ) : (
         <>
-          {devoleumHistory.data && (
+          {devoleumHistory && devoleumHistory.data && (
             <>
               <Meta
                 title={devoleumHistory.data.name}
@@ -125,7 +125,7 @@ const HistoryScreen: React.FC = () => {
                           fgColor="#014940"
                           value={
                             "https://app.devoleum.com/history/" +
-                            devoleumHistory._id
+                            devoleumHistory._id["$oid"]
                           }
                         />
                       </div>
@@ -134,11 +134,11 @@ const HistoryScreen: React.FC = () => {
                 </Col>
               </Row>
               <h3>{strings.title}</h3>
-              {steps.map((devoleumStep: IStep) => (
+              {steps && steps.map((devoleumStep: any) => (
                 <>
                   {devoleumStep.data && (
                     <Link
-                      to={`/step/${devoleumStep._id}`}
+                      to={`/step/${devoleumStep._id["$oid"]}`}
                       style={{ textDecoration: "none" }}
                     >
                       <Product product={devoleumStep} />

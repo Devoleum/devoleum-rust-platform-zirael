@@ -33,10 +33,11 @@ export const listSteps = (historyId) => async (
 ) => {
   try {
     dispatch({ type: STEP_LIST_REQUEST })
-    const { data } = await axios.get(
-      `/api/steps/history/${historyId}/steps`
+    const data = await axios.get(
+      `http://localhost:8080/api/steps/history/${historyId}/steps`
     )
     data.data = await getIterate(data);
+    console.log("steps rs: ", data);
 
     dispatch({
       type: STEP_LIST_SUCCESS,

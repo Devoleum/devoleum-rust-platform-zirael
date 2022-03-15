@@ -38,7 +38,7 @@ export const historyListReducer = (state = { histories: [] }, action) => {
     case HISTORY_LIST_SUCCESS:
       return {
         loading: false,
-        histories: action.payload.histories,
+        histories: action.payload,
         pages: action.payload.pages,
         page: action.payload.page,
       }
@@ -56,7 +56,7 @@ export const historyPublicListReducer = (state = { histories: [] }, action) => {
     case HISTORY_PUBLICLIST_SUCCESS:
       return {
         loading: false,
-        histories: action.payload.histories,
+        histories: action.payload,
       }
     case HISTORY_PUBLICLIST_FAIL:
       return { loading: false, error: action.payload }
@@ -88,6 +88,7 @@ export const historyDetailsReducer = (
     case HISTORY_DETAILS_REQUEST:
       return { ...state, loading: true }
     case HISTORY_DETAILS_SUCCESS:
+      console.log('hist dist: ', action);
       return { loading: false, devoleumHistory: action.payload }
     case HISTORY_DETAILS_FAIL:
       return { loading: false, error: action.payload }

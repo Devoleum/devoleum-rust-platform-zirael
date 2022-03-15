@@ -7,8 +7,8 @@ pub struct User {
     pub is_admin: Option<bool>,
     pub uri: String,
     pub name: String,
-    pub email: String,
-    pub password: String,
+    pub email: Option<String>,
+    pub password: Option<String>,
     pub created_at: Option<CreatedAt>,
     pub updated_at: Option<UpdatedAt>,
     #[serde(rename = "__v")]

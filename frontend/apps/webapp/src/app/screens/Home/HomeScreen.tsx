@@ -55,11 +55,11 @@ const HomeScreen: React.FC = () => {
         <Message variant="danger">{error}</Message>
       ) : (
         <>
-          {histories && histories.map((devoleumHistory: IHistory) => (
+          {histories && histories.map((devoleumHistory: any) => (
             <>
               {devoleumHistory.data && (
                 <Link
-                  to={`/history/${devoleumHistory._id}`}
+                  to={`/history/${devoleumHistory._id["$oid"]}`}
                   style={{ textDecoration: "none" }}
                 >
                   <Product product={devoleumHistory} />
