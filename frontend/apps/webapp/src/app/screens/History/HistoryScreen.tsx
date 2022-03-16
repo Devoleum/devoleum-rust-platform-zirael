@@ -35,10 +35,11 @@ const HistoryScreen: React.FC = () => {
   let { id } = useParams();
   const historyDetails = useSelector((state: RootStateOrAny) => state.historyDetails);
   const { loading, error, devoleumHistory } = historyDetails;
-  console.log("devoleumHistory: ", devoleumHistory);
+  console.log("devoleumHistory screen: ", devoleumHistory);
 
   const stepList = useSelector((state: RootStateOrAny) => state.stepList);
   const { steps } = stepList;
+  console.log("steps screen: ", stepList);
 
   useEffect(() => {
     //RETROFIT PREVIOUS PLATFORM IDS, REMOVE IT ON DEVELOPMENT
@@ -55,7 +56,7 @@ const HistoryScreen: React.FC = () => {
       }
     })();
 
-    if (!devoleumHistory._id["$oid"] || devoleumHistory._id["$oid"] !== old_id) {
+    if (!devoleumHistory._id || devoleumHistory._id["$oid"] !== old_id) {
       dispatch(listHistoryDetails(id, true));
       dispatch(listSteps(old_id));
     }
@@ -72,7 +73,7 @@ const HistoryScreen: React.FC = () => {
         <Message variant="danger">{error}</Message>
       ) : (
         <>
-          {devoleumHistory && devoleumHistory.data && (
+          {devoleumHistory._id && devoleumHistory.data && (
             <>
               <Meta
                 title={devoleumHistory.data.name}
@@ -92,7 +93,7 @@ const HistoryScreen: React.FC = () => {
                       <h3>{devoleumHistory.data.name}</h3>
                       {strings.by}{" "}
                       {devoleumHistory.data.merchant && (
-                        <Link to={`/merchant/${devoleumHistory.user}`}>
+                        <Link to={`/merchant/${devoleumHistory.user["$oid"]}`}>
                           {devoleumHistory.data.merchant.name}
                         </Link>
                       )}

@@ -5,13 +5,11 @@ import returnMatchLang from './returnMatchLang'
 const getOnce = async (item: any, getMerchant: boolean = false) => {
   const {localizedData} = await returnMatchLang(item.uri)
   item.data = localizedData;
-  console.log("item get: ", item.data)
 
   if (getMerchant) {
-    const merchantReq = await fetch('http://localhost:8080/api/users/merchant/' + item.user)
+    const merchantReq = await fetch('http://localhost:8080/api/users/merchant/' + item.user["$oid"])
     const merchantUri = await merchantReq.json();
     const {localizedData} = await returnMatchLang(merchantUri)
-    console.log("localizedMerchantData get: ", localizedData)
     item.data.merchant = localizedData;
   }
 

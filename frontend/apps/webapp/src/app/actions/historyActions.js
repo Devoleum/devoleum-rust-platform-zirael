@@ -113,6 +113,7 @@ export const listHistoryDetails = (id, getMerchBool = false) => async (dispatch)
 
     let data = await axios.get(`http://localhost:8080/api/histories/${id}`)
     data = data.data;
+    console.log("listHistoryDetails: ", data)
     data.data = await getOnce(data, getMerchBool);
 
     dispatch({

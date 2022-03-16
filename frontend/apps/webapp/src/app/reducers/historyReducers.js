@@ -88,7 +88,6 @@ export const historyDetailsReducer = (
     case HISTORY_DETAILS_REQUEST:
       return { ...state, loading: true }
     case HISTORY_DETAILS_SUCCESS:
-      console.log('hist dist: ', action);
       return { loading: false, devoleumHistory: action.payload }
     case HISTORY_DETAILS_FAIL:
       return { loading: false, error: action.payload }

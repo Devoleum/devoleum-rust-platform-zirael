@@ -57,13 +57,15 @@ const StepScreen = () => {
         <Message variant="danger">{error}</Message>
       ) : (
         <>
-          <Link
-            to={'/history/' + devoleumStep.historyId}
-            className="btn btn-light my-3"
-          >
-            {strings.back}
-          </Link>
-          {devoleumStep.data && (
+          {devoleumStep._id && (
+            <Link
+              to={'/history/' + devoleumStep.historyId['$oid']}
+              className="btn btn-light my-3"
+            >
+              {strings.back}
+            </Link>
+          )}
+          {devoleumStep._id && devoleumStep.data && (
             <>
               <Meta
                 title={devoleumStep.data.name}
@@ -108,7 +110,8 @@ const StepScreen = () => {
                             img={matic_on}
                             img_off={eth_main_off}
                             verifyLink={
-                              'https://eth.devoleum.com/' + devoleumStep._id
+                              'https://eth.devoleum.com/' +
+                              devoleumStep._id['$oid']
                             }
                           />
                           <Achievement
@@ -118,7 +121,7 @@ const StepScreen = () => {
                             img_off={algo_main_off}
                             verifyLink={
                               'https://algo.devoleum.com/main/' +
-                              devoleumStep._id
+                              devoleumStep._id['$oid']
                             }
                           />
                           <Achievement
@@ -133,7 +136,8 @@ const StepScreen = () => {
                             img={eth_test_on}
                             img_off={eth_test_off}
                             verifyLink={
-                              'https://eth.devoleum.com/' + devoleumStep._id
+                              'https://eth.devoleum.com/' +
+                              devoleumStep._id['$oid']
                             }
                           />
                           <Achievement
@@ -143,7 +147,7 @@ const StepScreen = () => {
                             img_off={algo_test_off}
                             verifyLink={
                               'https://algo.devoleum.com/test/' +
-                              devoleumStep._id
+                              devoleumStep._id['$oid']
                             }
                           />
                         </ListGroup.Item>

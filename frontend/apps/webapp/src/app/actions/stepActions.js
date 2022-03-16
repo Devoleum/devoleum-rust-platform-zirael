@@ -33,11 +33,12 @@ export const listSteps = (historyId) => async (
 ) => {
   try {
     dispatch({ type: STEP_LIST_REQUEST })
-    const data = await axios.get(
-      `http://localhost:8080/api/steps/history/${historyId}/steps`
+    let data = await axios.get(
+      `http://localhost:8080/api/history/${historyId}/steps`
     )
-    data.data = await getIterate(data);
+    data = data.data;
     console.log("steps rs: ", data);
+    data.data = await getIterate(data);
 
     dispatch({
       type: STEP_LIST_SUCCESS,
@@ -58,8 +59,10 @@ export const listStepDetails = (id) => async (dispatch) => {
   try {
     dispatch({ type: STEP_DETAILS_REQUEST })
 
-    const { data } = await axios.get(`/api/steps/${id}`)
+    let data = await axios.get(`http://localhost:8080/api/steps/${id}`)
+    data = data.data;
     data.data = await getOnce(data);
+    console.log('steps: ', data);
     delete data.data.randomValue;
     delete data.data.thumbnail;
 
