@@ -1,126 +1,11 @@
 mod models;
+mod api;
+
 use actix_cors::Cors;
 use actix_files::Files;
-use actix_web::{get, post, web, App, HttpResponse, HttpServer};
-use models::{histories::History, users::User, steps::Step};
-use mongodb::{bson::doc, options::IndexOptions, Client, Collection, IndexModel};
-
-const DB_NAME: &str = "devoleumdb";
-
-/// Gets the merchant with the supplied id.
-#[get("/api/users/merchant/{id}")]
-async fn get_merchant(client: web::Data<Client>, id: web::Path<String>) -> HttpResponse {
-    let id = id.into_inner();
-    let collection: Collection<User> = client.database(DB_NAME).collection("users");
-    match collection
-        .find_one(
-            doc! { "_id": bson::oid::ObjectId::parse_str(&id).unwrap() },
-            None,
-        )
-        .await
-    {
-        Ok(Some(user)) => HttpResponse::Ok().json(user.uri),
-        Ok(None) => HttpResponse::NotFound().body(format!("No merchant found with id {}", id)),
-        Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
-    }
-}
-
-//Steps
-#[get("/api/steps/{id}")]
-async fn get_step_by_id(client: web::Data<Client>, id: web::Path<String>) -> HttpResponse {
-    let id = id.into_inner();
-    let collection: Collection<Step> = client.database(DB_NAME).collection("steps");
-    match collection
-        .find_one(
-            doc! { "_id": bson::oid::ObjectId::parse_str(&id).unwrap() },
-            None,
-        )
-        .await
-    {
-        Ok(Some(result)) => HttpResponse::Ok().json(result),
-        Ok(None) => HttpResponse::NotFound().body(format!("No step found with id {}", id)),
-        Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
-    }
-}
-
-#[get("/api/history/{historyId}/steps")]
-async fn get_steps_by_historyid(client: web::Data<Client>, historyId: web::Path<String>) -> HttpResponse {
-    use futures_util::StreamExt;
-    let historyId = historyId.into_inner();
-    let collection: Collection<Step> = client.database(DB_NAME).collection("steps");
-    let mut cursor = collection.find(doc! {"historyId": bson::oid::ObjectId::parse_str(&historyId).unwrap() }, None).await.unwrap();
-    let mut results = Vec::new();
-    while let Some(result) = cursor.next().await {
-        match result {
-            Ok(document) => {
-                results.push(document);
-            }
-            _ => {
-                return HttpResponse::InternalServerError().finish();
-            }
-        }
-    }
-    HttpResponse::Ok().json(results)
-}
-
-//Histories
-/// Gets the public histories.
-#[get("/api/histories/public")]
-async fn get_public_histories(client: web::Data<Client>) -> HttpResponse {
-    use futures_util::StreamExt;
-    let collection: Collection<History> = client.database(DB_NAME).collection("histories");
-    let mut cursor = collection.find(doc! {"public": true}, None).await.unwrap();
-    let mut results = Vec::new();
-    while let Some(result) = cursor.next().await {
-        match result {
-            Ok(document) => {
-                results.push(document);
-            }
-            _ => {
-                return HttpResponse::InternalServerError().finish();
-            }
-        }
-    }
-    HttpResponse::Ok().json(results)
-}
-
-#[get("/api/histories/{id}")]
-async fn get_history_by_id(client: web::Data<Client>, id: web::Path<String>) -> HttpResponse {
-    let id = id.into_inner();
-    let collection: Collection<History> = client.database(DB_NAME).collection("histories");
-    match collection
-        .find_one(
-            doc! { "_id": bson::oid::ObjectId::parse_str(&id).unwrap() },
-            None,
-        )
-        .await
-    {
-        Ok(Some(result)) => HttpResponse::Ok().json(result),
-        Ok(None) => HttpResponse::NotFound().body(format!("No user found with id {}", id)),
-        Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
-    }
-}
-
-#[get("/api/histories/merchant/{id}")]
-async fn get_histories_by_merchant(client: web::Data<Client>, id: web::Path<String>) -> HttpResponse {
-    use futures_util::StreamExt;
-    let id = id.into_inner();
-    let collection: Collection<History> = client.database(DB_NAME).collection("histories");
-    let mut cursor = collection.find(doc! {"user": bson::oid::ObjectId::parse_str(&id).unwrap()}, None).await.unwrap();
-    let mut results = Vec::new();
-    while let Some(result) = cursor.next().await {
-        match result {
-            Ok(document) => {
-                results.push(document);
-            }
-            _ => {
-                return HttpResponse::InternalServerError().finish();
-            }
-        }
-    }
-    HttpResponse::Ok().json(results)
-}
-
+use actix_web::{web, App, HttpServer};
+use mongodb::{Client};
+use api::{histories, steps, users};
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -137,12 +22,10 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .app_data(web::Data::new(client.clone()))
             .wrap(cors)
-            .service(get_merchant)
-            .service(get_step_by_id)
-            .service(get_steps_by_historyid)
-            .service(get_public_histories)
-            .service(get_history_by_id)
-            .service(get_histories_by_merchant)
+            //.service(get_merchant)
+            .configure(api::users::config)
+            .configure(api::histories::config)
+            .configure(api::steps::config)
             .service(
                 Files::new("/", "./frontend/build/")
                     .index_file("index.html")
