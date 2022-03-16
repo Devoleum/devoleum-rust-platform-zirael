@@ -7,7 +7,7 @@ const getOnce = async (item: any, getMerchant: boolean = false) => {
   item.data = localizedData;
 
   if (getMerchant) {
-    const merchantReq = await fetch('http://localhost:8080/api/users/merchant/' + item.user["$oid"])
+    const merchantReq = await fetch('/api/users/merchant/' + item.user["$oid"])
     const merchantUri = await merchantReq.json();
     const {localizedData} = await returnMatchLang(merchantUri)
     item.data.merchant = localizedData;
@@ -22,7 +22,7 @@ const getIterate = async (items: any , getMerchant: boolean = false) => {
         const {localizedData}= await returnMatchLang(items[i].uri)
         items[i].data = localizedData;
           if (getMerchant) {
-          const merchantReq = await fetch('http://localhost:8080/api/users/merchant/' + items[i].user["$oid"])
+          const merchantReq = await fetch('/api/users/merchant/' + items[i].user["$oid"])
           const merchantUri = await merchantReq.json();
           const {localizedData} = await returnMatchLang(merchantUri)
           items[i].data.merchant = localizedData;

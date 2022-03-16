@@ -27,7 +27,7 @@ async fn main() -> std::io::Result<()> {
             .configure(api::histories::config)
             .configure(api::steps::config)
             .service(
-                Files::new("/", "./frontend/build/")
+                Files::new("/", "./frontend/dist/apps/webapp/")
                     .index_file("index.html")
                     .show_files_listing(),
             )

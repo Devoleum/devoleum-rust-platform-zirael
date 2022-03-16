@@ -34,7 +34,7 @@ export const listSteps = (historyId) => async (
   try {
     dispatch({ type: STEP_LIST_REQUEST })
     let data = await axios.get(
-      `http://localhost:8080/api/history/${historyId}/steps`
+      `/api/history/${historyId}/steps`
     )
     data = data.data;
     console.log("steps rs: ", data);
@@ -59,7 +59,7 @@ export const listStepDetails = (id) => async (dispatch) => {
   try {
     dispatch({ type: STEP_DETAILS_REQUEST })
 
-    let data = await axios.get(`http://localhost:8080/api/steps/${id}`)
+    let data = await axios.get(`/api/steps/${id}`)
     data = data.data;
     data.data = await getOnce(data);
     console.log('steps: ', data);

@@ -63,7 +63,7 @@ export const listPublicHistories = () => async (
     dispatch({ type: HISTORY_PUBLICLIST_REQUEST })
 
     let data = await axios.get(
-      `http://localhost:8080/api/histories/public`
+      `/api/histories/public`
     )
     data = data.data;
     console.log("histories: ", data)
@@ -111,7 +111,7 @@ export const listHistoryDetails = (id, getMerchBool = false) => async (dispatch)
   try {
     dispatch({ type: HISTORY_DETAILS_REQUEST })
 
-    let data = await axios.get(`http://localhost:8080/api/histories/${id}`)
+    let data = await axios.get(`/api/histories/${id}`)
     data = data.data;
     console.log("listHistoryDetails: ", data)
     data.data = await getOnce(data, getMerchBool);
