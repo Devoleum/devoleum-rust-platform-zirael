@@ -1,15 +1,20 @@
-mod models;
 mod api;
+mod models;
 
 use actix_cors::Cors;
 use actix_files::Files;
 use actix_web::{web, App, HttpServer};
-use mongodb::{Client};
 use api::{histories, steps, users};
+use mongodb::Client;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     let uri = std::env::var("MONGODB_URI").unwrap_or_else(|_| "mongodb://localhost:27017".into());
+    
+    let PORT = std::env::var("PORT")
+        .unwrap_or_else(|_| "8080".to_string())
+        .parse()
+        .expect("PORT must be a number");
 
     let client = Client::with_uri_str(uri).await.expect("failed to connect");
     HttpServer::new(move || {
@@ -32,7 +37,7 @@ async fn main() -> std::io::Result<()> {
                     .show_files_listing(),
             )
     })
-    .bind(("127.0.0.1", 8080))?
+    .bind(("0.0.0.0", PORT))?
     .run()
     .await
 }
