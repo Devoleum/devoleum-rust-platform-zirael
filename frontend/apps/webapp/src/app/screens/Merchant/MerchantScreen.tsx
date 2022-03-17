@@ -88,11 +88,11 @@ const MerchantScreen = () => {
             <Message variant="info">No histories found</Message>
           ) : (
             <>
-              {histories.map((devoleumHistory: IHistory) => (
+              {histories.map((devoleumHistory: any) => (
                 <>
                   {devoleumHistory.data && (
                     <Link
-                      to={`/history/${devoleumHistory._id}`}
+                      to={`/history/${devoleumHistory._id['$oid']}`}
                       style={{ textDecoration: 'none' }}
                     >
                       <Product product={devoleumHistory} />

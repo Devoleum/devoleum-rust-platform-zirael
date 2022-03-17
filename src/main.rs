@@ -12,9 +12,11 @@ async fn main() -> std::io::Result<()> {
     let uri = std::env::var("MONGODB_URI").unwrap_or_else(|_| "mongodb://localhost:27017".into());
     
     let PORT = std::env::var("PORT")
-        .unwrap_or_else(|_| "8080".to_string())
+        .unwrap_or_else(|_| "8000".to_string())
         .parse()
         .expect("PORT must be a number");
+
+        println!("Starting server port: {}", PORT);
 
     let client = Client::with_uri_str(uri).await.expect("failed to connect");
     HttpServer::new(move || {
@@ -22,7 +24,6 @@ async fn main() -> std::io::Result<()> {
             .allow_any_origin()
             .allow_any_header()
             .allow_any_method();
-        println!("Starting server");
 
         App::new()
             .app_data(web::Data::new(client.clone()))

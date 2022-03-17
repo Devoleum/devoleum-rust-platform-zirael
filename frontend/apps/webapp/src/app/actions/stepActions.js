@@ -33,11 +33,9 @@ export const listSteps = (historyId) => async (
 ) => {
   try {
     dispatch({ type: STEP_LIST_REQUEST })
-    let data = await axios.get(
+    let {data} = await axios.get(
       `/api/history/${historyId}/steps`
     )
-    data = data.data;
-    console.log("steps rs: ", data);
     data.data = await getIterate(data);
 
     dispatch({
@@ -59,10 +57,8 @@ export const listStepDetails = (id) => async (dispatch) => {
   try {
     dispatch({ type: STEP_DETAILS_REQUEST })
 
-    let data = await axios.get(`/api/steps/${id}`)
-    data = data.data;
+    let {data} = await axios.get(`/api/steps/${id}`)
     data.data = await getOnce(data);
-    console.log('steps: ', data);
     delete data.data.randomValue;
     delete data.data.thumbnail;
 

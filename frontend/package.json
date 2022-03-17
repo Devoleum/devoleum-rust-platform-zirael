@@ -2,6 +2,7 @@
   "name": "devoleum",
   "version": "0.0.0",
   "license": "MIT",
+  "proxy": "http://localhost:8000",
   "scripts": {
     "start": "nx serve",
     "build": "nx build",

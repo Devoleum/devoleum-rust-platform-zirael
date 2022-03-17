@@ -62,10 +62,9 @@ export const listPublicHistories = () => async (
   try {
     dispatch({ type: HISTORY_PUBLICLIST_REQUEST })
 
-    let data = await axios.get(
+    let {data} = await axios.get(
       `/api/histories/public`
     )
-    data = data.data;
     console.log("histories: ", data)
     data = await getIterate(data, true);
     console.log("histories2: ", data)
@@ -111,8 +110,7 @@ export const listHistoryDetails = (id, getMerchBool = false) => async (dispatch)
   try {
     dispatch({ type: HISTORY_DETAILS_REQUEST })
 
-    let data = await axios.get(`/api/histories/${id}`)
-    data = data.data;
+    let {data} = await axios.get(`/api/histories/${id}`)
     console.log("listHistoryDetails: ", data)
     data.data = await getOnce(data, getMerchBool);
 

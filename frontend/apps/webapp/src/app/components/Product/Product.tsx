@@ -32,7 +32,7 @@ const Product: React.FC<IProps> = ({ product, fullText = false }: IProps) => {
         {product.data.merchant && (
           <div>
             {strings.by}{" "}
-            <Link to={`/merchant/${product.user}`}>
+            <Link to={`/merchant/${product.user['$oid']}`}>
               <span className="card_text_merch">
                 {product.data.merchant.name}
               </span>
