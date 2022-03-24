@@ -32,3 +32,26 @@ pub struct UpdatedAt {
     #[serde(rename = "$date")]
     pub date: String,
 }
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Register {
+    pub name: String,
+    pub isAdmin: bool,
+    pub email: String,
+    pub password: String,
+    pub uri: String
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Claims {
+    pub sub: String,
+    pub exp: usize,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Login {
+    pub email: String,
+    pub password: String,
+    #[serde(default)]
+    pub remember_me: bool,
+}
