@@ -1,0 +1,20 @@
+[
+    {
+        "_id": {
+            "$oid": "623cf415676e0bde8cbb03b1"
+        },
+        "name": "localTest",
+        "email": "localTest@gmeil.gm",
+        "password": "8b28f613fa1ccdb1d303704839a0bb196424f425badfa4e4f43808f6812b6bcc0ae43374383bb6e46294d08155a64acbad92084387c73f696f00368ea106ebb4",
+        "isAdmin:": false
+    },
+    {
+        "_id": {
+            "$oid": "623f37afdce84fc4050b108c"
+        },
+        "name": "localTest",
+        "email": "olocalTest@gmeil.gm",
+        "password": "8b28f613fa1ccdb1d303704839a0bb196424f425badfa4e4f43808f6812b6bcc0ae43374383bb6e46294d08155a64acbad92084387c73f696f00368ea106ebb4",
+        "isAdmin:": false
+    }
+]

@@ -2,11 +2,11 @@ use crate::config::{Config, IConfig};
 use crate::models::response::{LoginResponse, Response};
 use crate::models::users::{Claims, Login, Register, User};
 use actix_web::{get, post, web, App, HttpResponse, HttpServer};
-use chrono::{DateTime, Duration, Utc};
 use blake2::{Blake2b512, Digest};
+use chrono::{DateTime, Duration, Utc};
+use hex_literal::hex;
 use jsonwebtoken::{decode, encode, Algorithm, DecodingKey, EncodingKey, Header, Validation};
 use mongodb::{bson::doc, bson::Document, error::Error, Client, Collection};
-use hex_literal::hex;
 
 const DB_NAME: &str = "devoleumdb";
 
@@ -14,6 +14,7 @@ pub fn config(cfg: &mut web::ServiceConfig) {
     cfg.service(
         web::scope("api/users")
             .service(get_merchant)
+            .service(login)
             .service(register_controller),
     );
 }
@@ -51,7 +52,7 @@ async fn get_merchant(client: web::Data<Client>, id: web::Path<String>) -> HttpR
     }
 }
 
-#[post("/")]
+#[post("/signup")]
 async fn register_controller(user: web::Json<Register>, client: web::Data<Client>) -> HttpResponse {
     let user = user.into_inner();
     let collection: Collection<Document> = client.database(DB_NAME).collection("users");
@@ -75,12 +76,15 @@ async fn register_controller(user: web::Json<Register>, client: web::Data<Client
 
 #[post("/login")]
 async fn login(user: web::Json<Login>, client: web::Data<Client>) -> HttpResponse {
+    println!("Starting login");
+
     match find_user_with_email(client, user.email.to_string()).await {
         Ok(Some(x)) => {
             let mut hasher = Blake2b512::new();
             hasher.update(user.password.as_str());
             let hash_pw: String = format!("{:x}", hasher.finalize());
-            if x.password == hash_pw {
+            println!("Starting login some");
+            if x.password == Some(hash_pw) {
                 // JWT
                 let _config: Config = Config {};
                 let _var = _config.get_config_with_key("SECRET_KEY");
@@ -94,7 +98,7 @@ async fn login(user: web::Json<Login>, client: web::Data<Client>) -> HttpRespons
                     _date = Utc::now() + Duration::days(365);
                 }
                 let my_claims = Claims {
-                    sub: user.email,
+                    sub: user.email.to_string(),
                     exp: _date.timestamp() as usize,
                 };
                 let token = encode(
@@ -114,5 +118,6 @@ async fn login(user: web::Json<Login>, client: web::Data<Client>) -> HttpRespons
             }
         }
         Ok(None) => HttpResponse::InternalServerError().body("not found"),
+        Err(err) => HttpResponse::InternalServerError().body(err.to_string() + " error login"),
     }
 }
