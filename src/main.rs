@@ -1,7 +1,7 @@
 mod api;
 mod models;
 mod config;
-
+mod middlewares;
 use actix_cors::Cors;
 use actix_files::Files;
 use actix_web::{web, App, HttpServer};

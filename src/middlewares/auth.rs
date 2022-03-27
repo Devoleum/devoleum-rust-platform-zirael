@@ -1,5 +1,5 @@
 use crate::config::{Config, IConfig};
-use crate::models::user::Claims;
+use crate::models::users::{Claims};
 use actix_web::error::ErrorUnauthorized;
 use actix_web::{dev, Error, FromRequest, HttpRequest};
 use futures::future::{err, ok, Ready};
@@ -10,7 +10,6 @@ pub struct AuthorizationService;
 impl FromRequest for AuthorizationService {
     type Error = Error;
     type Future = Ready<Result<AuthorizationService, Error>>;
-    type Config = ();
 
     fn from_request(_req: &HttpRequest, _payload: &mut dev::Payload) -> Self::Future {
         let _auth = _req.headers().get("Authorization");

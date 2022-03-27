@@ -3,12 +3,12 @@ use serde::{Deserialize, Serialize};
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct User {
     #[serde(rename = "_id")]
-    pub id: Option<bson::oid::ObjectId>,
-    pub is_admin: Option<bool>,
+    pub id: bson::oid::ObjectId,
+    pub is_admin: bool,
     pub uri: String,
     pub name: String,
-    pub email: Option<String>,
-    pub password: Option<String>,
+    pub email: String,
+    pub password: String,
     pub created_at: Option<CreatedAt>,
     pub updated_at: Option<UpdatedAt>,
     #[serde(rename = "__v")]
@@ -54,4 +54,9 @@ pub struct Login {
     pub password: String,
     #[serde(default)]
     pub remember_me: bool,
+}
+
+#[derive(Deserialize)]
+pub struct Token {
+    pub token: String,
 }
