@@ -1,12 +1,12 @@
 use crate::config::{Config, IConfig};
+use crate::middlewares::auth::AuthorizationService;
 use crate::models::response::{LoginResponse, Response};
-use crate::models::users::{Claims, Login, Register, User, Token};
+use crate::models::users::{Claims, Login, Register, Token, User, FoundUserResponse};
 use actix_web::{get, post, web, App, HttpResponse, HttpServer};
 use blake2::{Blake2b512, Digest};
 use chrono::{DateTime, Duration, Utc};
 use jsonwebtoken::{decode, encode, Algorithm, DecodingKey, EncodingKey, Header, Validation};
 use mongodb::{bson::doc, bson::Document, error::Error, Client, Collection};
-use crate::middlewares::auth::AuthorizationService;
 
 const DB_NAME: &str = "devoleumdb";
 
@@ -23,16 +23,13 @@ pub fn config(cfg: &mut web::ServiceConfig) {
 async fn find_user_with_email(
     client: web::Data<Client>,
     email: String,
-) -> Result<Option<Login>, Error> {
-    let collection: Collection<Document> = client.database(DB_NAME).collection("users");
-    let cursor = collection.find_one(doc! {"email": email}, None).await;
-    match cursor {
-        Ok(Some(doc)) => match bson::from_bson(bson::Bson::Document(doc)) {
-            Ok(model) => Ok(model),
-            Err(e) => Err(Error::from(e)),
-        },
+) -> Result<Option<FoundUserResponse>, String> {
+    let collection: Collection<FoundUserResponse> = client.database(DB_NAME).collection("users");
+    match collection.find_one(doc! {"email": email}, None).await
+    {
+        Ok(Some(result)) => Ok(Some(result)),
         Ok(None) => Ok(None),
-        Err(err) => Err(Error::from(err)),
+        Err(err) => Err(err.to_string()),
     }
 }
 
@@ -53,7 +50,7 @@ async fn get_merchant(client: web::Data<Client>, id: web::Path<String>) -> HttpR
     }
 }
 
-#[post("/signup")]
+#[post("/")]
 async fn register_controller(user: web::Json<Register>, client: web::Data<Client>) -> HttpResponse {
     let user = user.into_inner();
     let collection: Collection<Document> = client.database(DB_NAME).collection("users");
@@ -65,7 +62,7 @@ async fn register_controller(user: web::Json<Register>, client: web::Data<Client
             let mut hasher = Blake2b512::new();
             hasher.update(user.password.as_str());
             let hash_pw: String = format!("{:x}", hasher.finalize());
-            let _ex = collection.insert_one(doc! {"name": user.name, "email": user.email, "password": hash_pw, "isAdmin:": false}, None);
+            let _ex = collection.insert_one(doc! {"isAdmin:": false, "uri": user.uri, "name": user.name, "email": user.email, "password": hash_pw,  "createdAt": Utc::now().to_string(), "updatedAt": Utc::now().to_string(), "__v": "0"}, None);
             match _ex.await {
                 Ok(_) => HttpResponse::Ok().json("success"),
                 Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
@@ -99,6 +96,7 @@ async fn login(user: web::Json<Login>, client: web::Data<Client>) -> HttpRespons
                     _date = Utc::now() + Duration::days(365);
                 }
                 let my_claims = Claims {
+                    id: x.id,
                     sub: user.email.to_string(),
                     exp: _date.timestamp() as usize,
                 };
@@ -125,5 +123,6 @@ async fn login(user: web::Json<Login>, client: web::Data<Client>) -> HttpRespons
 
 #[get("/protected")]
 async fn user_informations(_req: AuthorizationService) -> HttpResponse {
-    HttpResponse::Ok().json("success")
+    println!("Starting protected {}", _req.user);
+    HttpResponse::Ok().json("user: ".to_string() + &_req.user)
 }

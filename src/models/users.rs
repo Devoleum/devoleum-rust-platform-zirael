@@ -1,6 +1,8 @@
 use serde::{Deserialize, Serialize};
+use chrono::{DateTime, Utc};
+use bson::{serde_helpers::chrono_datetime_as_bson_datetime};
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct User {
     #[serde(rename = "_id")]
     pub id: bson::oid::ObjectId,
@@ -9,28 +11,12 @@ pub struct User {
     pub name: String,
     pub email: String,
     pub password: String,
-    pub created_at: Option<CreatedAt>,
-    pub updated_at: Option<UpdatedAt>,
+    #[serde(with = "chrono_datetime_as_bson_datetime")]
+    pub created_at: DateTime<Utc>,
+    #[serde(with = "chrono_datetime_as_bson_datetime")]
+    pub updated_at: DateTime<Utc>,
     #[serde(rename = "__v")]
     pub v: i64,
-}
-
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct Id {
-    #[serde(rename = "$oid")]
-    pub oid: String,
-}
-
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct CreatedAt {
-    #[serde(rename = "$date")]
-    pub date: String,
-}
-
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct UpdatedAt {
-    #[serde(rename = "$date")]
-    pub date: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -44,6 +30,8 @@ pub struct Register {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Claims {
+    #[serde(rename = "_id")]
+    pub id: bson::oid::ObjectId,
     pub sub: String,
     pub exp: usize,
 }
@@ -54,6 +42,14 @@ pub struct Login {
     pub password: String,
     #[serde(default)]
     pub remember_me: bool,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct FoundUserResponse {
+    #[serde(rename = "_id")]
+    pub id: bson::oid::ObjectId,
+    pub email: String,
+    pub password: String,
 }
 
 #[derive(Deserialize)]

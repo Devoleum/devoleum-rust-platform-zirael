@@ -1,4 +1,6 @@
 use actix_web::{get, post, web, HttpResponse};
+use crate::middlewares::auth::AuthorizationService;
+
 use crate::models::{histories::History};
 use mongodb::{bson::doc, Client, Collection};
 const DB_NAME: &str = "devoleumdb";
@@ -66,3 +68,10 @@ async fn get_histories_by_merchant(client: web::Data<Client>, id: web::Path<Stri
     }
     HttpResponse::Ok().json(results)
 }
+
+/* #[post("/histories")]
+async fn user_informations(_req: AuthorizationService, hist: web::Json<History>, client: web::Data<Client>) -> HttpResponse {
+    let collection: Collection<Document> = client.database(DB_NAME).collection("histories");
+    let _ex = collection.insert_one(doc! {"isAdmin:": false, "uri": hist.uri, "name": user.name, "email": user.email, "password": hash_pw,  "createdAt": Utc::now().to_string(), "updatedAt": Utc::now().to_string(), "__v": "0"}, None);
+    HttpResponse::Ok().json("success")
+} */

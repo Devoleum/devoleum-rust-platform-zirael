@@ -5,7 +5,9 @@ use actix_web::{dev, Error, FromRequest, HttpRequest};
 use futures::future::{err, ok, Ready};
 use jsonwebtoken::{decode, Algorithm, DecodingKey, Validation};
 
-pub struct AuthorizationService;
+pub struct AuthorizationService {
+    pub user: String,
+}
 
 impl FromRequest for AuthorizationService {
     type Error = Error;
@@ -25,7 +27,9 @@ impl FromRequest for AuthorizationService {
                     &DecodingKey::from_secret(key),
                     &Validation::new(Algorithm::HS256),
                 ) {
-                    Ok(_token) => ok(AuthorizationService),
+                    Ok(_token) => ok(AuthorizationService{
+                        user: _token.claims.id.to_string(),
+                    }),
                     Err(_e) => err(ErrorUnauthorized("invalid token!")),
                 }
             }

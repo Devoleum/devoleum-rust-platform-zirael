@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
+use chrono::{DateTime, Utc};
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct History {
     pub public: bool,
     pub featured: Option<bool>,
@@ -12,8 +13,10 @@ pub struct History {
     pub name: String,
     pub uri: String,
     pub category: String,
-    pub created_at: Option<String>,
-    pub updated_at: Option<String>,
+    #[serde(with = "bson::serde_helpers::chrono_datetime_as_bson_datetime")]
+    pub created_at: DateTime<Utc>,
+    #[serde(with = "bson::serde_helpers::chrono_datetime_as_bson_datetime")]
+    pub updated_at: DateTime<Utc>,
     #[serde(rename = "__v")]
     pub v: i64,
 }
