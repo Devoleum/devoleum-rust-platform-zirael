@@ -20,3 +20,12 @@ pub struct History {
     #[serde(rename = "__v")]
     pub v: i64,
 }
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct PostHistory {
+    pub public: bool,
+    pub featured: bool,
+    pub name: String,
+    pub uri: String,
+    pub category: String,
+}

@@ -1,15 +1,20 @@
-use actix_web::{get, post, web, HttpResponse};
 use crate::middlewares::auth::AuthorizationService;
+use crate::models::histories::{History, PostHistory};
+use actix_web::{get, post, put, web, HttpResponse, Error};
+use chrono::{DateTime, Duration, Utc};
+use mongodb::{bson::doc, bson::Document, Client, Collection};
+use futures::future::{err, ok, Ready};
 
-use crate::models::{histories::History};
-use mongodb::{bson::doc, Client, Collection};
 const DB_NAME: &str = "devoleumdb";
 
 pub fn config(cfg: &mut web::ServiceConfig) {
-    cfg.service(web::scope("api/histories")
-        .service(get_public_histories)
-        .service(get_history_by_id)
-        .service(get_histories_by_merchant)
+    cfg.service(
+        web::scope("api/histories")
+            .service(get_public_histories)
+            .service(get_history_by_id)
+            .service(get_histories_by_merchant)
+            .service(create_history)
+            .service(update_history),
     );
 }
 
@@ -32,29 +37,44 @@ async fn get_public_histories(client: web::Data<Client>) -> HttpResponse {
     HttpResponse::Ok().json(results)
 }
 
-#[get("/{id}")]
-async fn get_history_by_id(client: web::Data<Client>, id: web::Path<String>) -> HttpResponse {
-    let id = id.into_inner();
+async fn get_history_by_id_controller(
+    client: &web::Data<Client>,
+    id: &String,
+) -> Result<History, String> {
+    let id = id;
     let collection: Collection<History> = client.database(DB_NAME).collection("histories");
     match collection
-        .find_one(
-            doc! { "_id": bson::oid::ObjectId::parse_str(&id).unwrap() },
-            None,
-        )
+        .find_one(doc! {"_id": bson::oid::ObjectId::parse_str(&id).unwrap()}, None)
         .await
-    {
-        Ok(Some(result)) => HttpResponse::Ok().json(result),
-        Ok(None) => HttpResponse::NotFound().body(format!("No user found with id {}", id)),
-        Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
+    {     
+        Ok(Some(history)) => Ok(history),
+        Ok(None) => Err("not found".to_string()),
+        Err(err) => Err(err.to_string()),
     }
 }
 
+#[get("/{id}")]
+async fn get_history_by_id(client: web::Data<Client>, id: web::Path<String>) -> HttpResponse {
+    let id = id.into_inner();
+    get_history_by_id_controller(&client, &id).await.map(|history| HttpResponse::Ok().json(history))
+        .unwrap_or_else(|err| HttpResponse::InternalServerError().body(err))
+}
+
 #[get("/merchant/{id}")]
-async fn get_histories_by_merchant(client: web::Data<Client>, id: web::Path<String>) -> HttpResponse {
+async fn get_histories_by_merchant(
+    client: web::Data<Client>,
+    id: web::Path<String>,
+) -> HttpResponse {
     use futures_util::StreamExt;
     let id = id.into_inner();
     let collection: Collection<History> = client.database(DB_NAME).collection("histories");
-    let mut cursor = collection.find(doc! {"user": bson::oid::ObjectId::parse_str(&id).unwrap()}, None).await.unwrap();
+    let mut cursor = collection
+        .find(
+            doc! {"user": bson::oid::ObjectId::parse_str(&id).unwrap()},
+            None,
+        )
+        .await
+        .unwrap();
     let mut results = Vec::new();
     while let Some(result) = cursor.next().await {
         match result {
@@ -69,9 +89,49 @@ async fn get_histories_by_merchant(client: web::Data<Client>, id: web::Path<Stri
     HttpResponse::Ok().json(results)
 }
 
-/* #[post("/histories")]
-async fn user_informations(_req: AuthorizationService, hist: web::Json<History>, client: web::Data<Client>) -> HttpResponse {
+#[post("/")]
+async fn create_history(
+    _req: AuthorizationService,
+    hist: web::Json<PostHistory>,
+    client: web::Data<Client>,
+) -> HttpResponse {
     let collection: Collection<Document> = client.database(DB_NAME).collection("histories");
-    let _ex = collection.insert_one(doc! {"isAdmin:": false, "uri": hist.uri, "name": user.name, "email": user.email, "password": hash_pw,  "createdAt": Utc::now().to_string(), "updatedAt": Utc::now().to_string(), "__v": "0"}, None);
-    HttpResponse::Ok().json("success")
-} */
+    let _ex = collection.insert_one(doc! {"public": false, "featured": false, "user": bson::oid::ObjectId::parse_str(_req.user).unwrap(), "uri": hist.uri.to_string(), "name": hist.name.to_string(), "category": hist.category.to_string(),  "createdAt": Utc::now().to_string(), "updatedAt": Utc::now().to_string(), "__v": "0"}, None);
+    match _ex.await {
+        Ok(_) => HttpResponse::Ok().json("success create_history"),
+        Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
+    }
+}
+
+
+#[put("/{id}")]
+async fn update_history(
+    _req: AuthorizationService,
+    hist: web::Json<PostHistory>,
+    client: web::Data<Client>,
+    id: web::Path<String>
+) -> HttpResponse {
+    let id = id.into_inner();
+    let user_id = bson::oid::ObjectId::parse_str(_req.user).unwrap();
+    let user_id_from_history = get_history_by_id_controller(&client, &id).await.unwrap().user;
+    if user_id != user_id_from_history {
+        return HttpResponse::Unauthorized().finish();
+    }
+    let collection: Collection<Document> = client.database(DB_NAME).collection("histories");
+    let obj_update = doc! {
+        "$set": {
+            "public": hist.public,
+            "featured": hist.featured,
+            "uri": hist.uri.to_string(),
+            "category": hist.category.to_string(),
+            "name": hist.name.to_string(),
+            "updatedAt": Utc::now().to_string(),
+        }
+    };
+    
+    let _ex = collection.update_one(doc! { "_id": bson::oid::ObjectId::parse_str(&id).unwrap() }, obj_update, None);
+    match _ex.await {
+        Ok(_) => HttpResponse::Ok().json("success update_history"),
+        Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
+    }
+}
