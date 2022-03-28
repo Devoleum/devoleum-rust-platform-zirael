@@ -14,9 +14,9 @@ pub struct History {
     pub uri: String,
     pub category: String,
     #[serde(with = "bson::serde_helpers::chrono_datetime_as_bson_datetime")]
-    pub created_at: DateTime<Utc>,
+    pub createdAt: DateTime<Utc>,
     #[serde(with = "bson::serde_helpers::chrono_datetime_as_bson_datetime")]
-    pub updated_at: DateTime<Utc>,
+    pub updatedAt: DateTime<Utc>,
     #[serde(rename = "__v")]
     pub v: i64,
 }
@@ -29,3 +29,11 @@ pub struct PostHistory {
     pub uri: String,
     pub category: String,
 }
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct GetHistory {
+    #[serde(rename = "_id")]
+    pub id: bson::oid::ObjectId,
+    pub user: bson::oid::ObjectId,
+}
+

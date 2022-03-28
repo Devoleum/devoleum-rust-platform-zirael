@@ -1,6 +1,6 @@
-use serde::{Deserialize, Serialize};
+use bson::serde_helpers::chrono_datetime_as_bson_datetime;
 use chrono::{DateTime, Utc};
-use bson::{serde_helpers::chrono_datetime_as_bson_datetime};
+use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct User {
@@ -25,13 +25,14 @@ pub struct Register {
     pub isAdmin: bool,
     pub email: String,
     pub password: String,
-    pub uri: String
+    pub uri: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Claims {
     #[serde(rename = "_id")]
     pub id: bson::oid::ObjectId,
+    pub isAdmin: bool,
     pub sub: String,
     pub exp: usize,
 }
@@ -50,9 +51,15 @@ pub struct FoundUserResponse {
     pub id: bson::oid::ObjectId,
     pub email: String,
     pub password: String,
+    pub isAdmin: bool,
 }
 
 #[derive(Deserialize)]
 pub struct Token {
     pub token: String,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct GetOwner {
+    pub user: bson::oid::ObjectId,
 }

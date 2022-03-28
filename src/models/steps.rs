@@ -1,62 +1,50 @@
 use serde::{Deserialize, Serialize};
+use chrono::{DateTime, Utc};
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Step {
     #[serde(rename = "_id")]
-    pub id: Id,
-    pub public: Option<bool>,
-    pub featured: Option<bool>,
+    pub id: bson::oid::ObjectId,
+    pub user: bson::oid::ObjectId,
+    pub public: bool,
+    pub featured: bool,
     #[serde(rename = "main_eth_notarization")]
-    pub main_eth_notarization: Option<String>,
+    pub main_eth_notarization: String,
     #[serde(rename = "test_algo_notarization")]
-    pub test_algo_notarization: Option<String>,
+    pub test_algo_notarization: String,
     #[serde(rename = "bitcoin_notarization")]
-    pub bitcoin_notarization: Option<String>,
-    pub user: User,
+    pub bitcoin_notarization: String,
     pub name: String,
-    pub uri: Option<String>,
-    pub randomize_proof: Option<String>,
-    #[serde(rename = "historyId")]
-    pub history_id: Option<HistoryId>,
-    pub created_at: Option<CreatedAt>,
-    pub updated_at: Option<UpdatedAt>,
+    pub uri: String,
+    pub randomizeProof: String,
+    pub historyId: bson::oid::ObjectId,
+    #[serde(with = "bson::serde_helpers::chrono_datetime_as_bson_datetime")]
+    pub createdAt: DateTime<Utc>,
+    #[serde(with = "bson::serde_helpers::chrono_datetime_as_bson_datetime")]
+    pub updatedAt: DateTime<Utc>,
     #[serde(rename = "__v")]
     pub v: i64,
     pub hash: String,
     #[serde(rename = "test_eth_notarization")]
-    pub test_eth_notarization: Option<String>,
+    pub test_eth_notarization: String,
     #[serde(rename = "main_algo_notarization")]
-    pub main_algo_notarization: Option<String>,
+    pub main_algo_notarization: String,
     #[serde(rename = "polygon_matic_notarization")]
-    pub polygon_matic_notarization: Option<String>,
+    pub polygon_matic_notarization: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct Id {
-    #[serde(rename = "$oid")]
-    pub oid: String,
+#[derive(Serialize, Deserialize, Debug)]
+pub struct PostStep {
+    pub public: bool,
+    pub randomizeProof: String,
+    pub featured: bool,
+    pub name: String,
+    pub uri: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct User {
-    #[serde(rename = "$oid")]
-    pub oid: String,
-}
-
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct HistoryId {
-    #[serde(rename = "$oid")]
-    pub oid: String,
-}
-
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct CreatedAt {
-    #[serde(rename = "$date")]
-    pub date: String,
-}
-
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct UpdatedAt {
-    #[serde(rename = "$date")]
-    pub date: String,
+#[derive(Serialize, Deserialize, Debug)]
+pub struct NotarizeStep {
+    pub txurl: String,
+    pub hash: String,
+    pub chain_name: String,
 }

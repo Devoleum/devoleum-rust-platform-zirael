@@ -1,7 +1,7 @@
 use crate::config::{Config, IConfig};
 use crate::middlewares::auth::AuthorizationService;
 use crate::models::response::{LoginResponse, Response};
-use crate::models::users::{Claims, Login, Register, Token, User, FoundUserResponse};
+use crate::models::users::{Claims, FoundUserResponse, Login, Register, Token, User};
 use actix_web::{get, post, web, App, HttpResponse, HttpServer};
 use blake2::{Blake2b512, Digest};
 use chrono::{DateTime, Duration, Utc};
@@ -25,8 +25,7 @@ async fn find_user_with_email(
     email: String,
 ) -> Result<Option<FoundUserResponse>, String> {
     let collection: Collection<FoundUserResponse> = client.database(DB_NAME).collection("users");
-    match collection.find_one(doc! {"email": email}, None).await
-    {
+    match collection.find_one(doc! {"email": email}, None).await {
         Ok(Some(result)) => Ok(Some(result)),
         Ok(None) => Ok(None),
         Err(err) => Err(err.to_string()),
@@ -97,6 +96,7 @@ async fn login(user: web::Json<Login>, client: web::Data<Client>) -> HttpRespons
                 }
                 let my_claims = Claims {
                     id: x.id,
+                    isAdmin: x.isAdmin,
                     sub: user.email.to_string(),
                     exp: _date.timestamp() as usize,
                 };

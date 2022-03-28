@@ -1,5 +1,5 @@
 use crate::config::{Config, IConfig};
-use crate::models::users::{Claims};
+use crate::models::users::Claims;
 use actix_web::error::ErrorUnauthorized;
 use actix_web::{dev, Error, FromRequest, HttpRequest};
 use futures::future::{err, ok, Ready};
@@ -7,6 +7,7 @@ use jsonwebtoken::{decode, Algorithm, DecodingKey, Validation};
 
 pub struct AuthorizationService {
     pub user: String,
+    pub isAdmin: bool,
 }
 
 impl FromRequest for AuthorizationService {
@@ -27,8 +28,9 @@ impl FromRequest for AuthorizationService {
                     &DecodingKey::from_secret(key),
                     &Validation::new(Algorithm::HS256),
                 ) {
-                    Ok(_token) => ok(AuthorizationService{
+                    Ok(_token) => ok(AuthorizationService {
                         user: _token.claims.id.to_string(),
+                        isAdmin: _token.claims.isAdmin,
                     }),
                     Err(_e) => err(ErrorUnauthorized("invalid token!")),
                 }
