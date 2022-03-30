@@ -15,7 +15,8 @@ pub fn config(cfg: &mut web::ServiceConfig) {
         web::scope("api/users")
             .service(get_merchant)
             .service(login)
-            .service(register_controller),
+            .service(register_controller)
+            .service(update_user),
     );
 }
 
@@ -141,7 +142,7 @@ async fn update_user(
             Ok(_) => HttpResponse::Ok().json("success"),
             Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
         }
-    } else {
+    } else if user.email.is_empty() && user.uri.is_empty() {
         let mut hasher = Blake2b512::new();
         hasher.update(user.password.as_str());
         let hash_pw: String = format!("{:x}", hasher.finalize());
@@ -156,5 +157,7 @@ async fn update_user(
             Ok(_) => HttpResponse::Ok().json("success"),
             Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
         }
+    } else {
+        HttpResponse::InternalServerError().body("bad request update user")
     }
 }
