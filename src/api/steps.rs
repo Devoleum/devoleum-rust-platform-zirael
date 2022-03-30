@@ -1,9 +1,7 @@
 use crate::middlewares::auth::AuthorizationService;
 use crate::models::users::GetOwner;
-use crate::models::{
-    histories::History, steps::NotarizeStep, steps::PostStep, steps::Step, users::User,
-};
-use actix_web::{get, post, put, web, App, HttpResponse, HttpServer};
+use crate::models::{steps::NotarizeStep, steps::PostStep, steps::Step};
+use actix_web::{get, post, put, web, HttpResponse};
 use chrono::Utc;
 use mongodb::{bson::doc, bson::Document, Client, Collection};
 
@@ -11,7 +9,7 @@ const DB_NAME: &str = "devoleumdb";
 
 pub fn config(cfg: &mut web::ServiceConfig) {
     cfg.service(
-        web::scope("api")
+        web::scope("api/steps")
             .service(get_step_by_id)
             .service(get_steps_by_historyid)
             .service(create_step)
@@ -103,12 +101,12 @@ async fn create_step(
     let collection: Collection<Document> = client.database(DB_NAME).collection("histories");
     let obj_update = doc! {
         "public": false,
-         "featured": false,
-         "randomizeProof": step.randomizeProof.to_string(),
-         "user": bson::oid::ObjectId::parse_str(user_id.to_string()).unwrap(),
-         "historyId": bson::oid::ObjectId::parse_str(history_id).unwrap(),
-          "uri": step.uri.to_string(),
-           "name": step.name.to_string(),
+        "featured": false,
+        "randomizeProof": step.randomizeProof.to_string(),
+        "user": bson::oid::ObjectId::parse_str(user_id.to_string()).unwrap(),
+        "historyId": bson::oid::ObjectId::parse_str(history_id).unwrap(),
+        "uri": step.uri.to_string(),
+        "name": step.name.to_string(),
         "createdAt": Utc::now(),
         "updatedAt": Utc::now(),
          "__v": "0"

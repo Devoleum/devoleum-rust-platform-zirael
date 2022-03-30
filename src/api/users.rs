@@ -61,7 +61,7 @@ async fn register_controller(user: web::Json<Register>, client: web::Data<Client
             let mut hasher = Blake2b512::new();
             hasher.update(user.password.as_str());
             let hash_pw: String = format!("{:x}", hasher.finalize());
-            let _ex = collection.insert_one(doc! {"isAdmin:": false, "uri": user.uri, "name": user.name, "email": user.email, "password": hash_pw,  "createdAt": Utc::now().to_string(), "updatedAt": Utc::now().to_string(), "__v": "0"}, None);
+            let _ex = collection.insert_one(doc! {"isAdmin": false, "uri": user.uri, "name": user.name, "email": user.email, "password": hash_pw,  "createdAt": Utc::now().to_string(), "updatedAt": Utc::now().to_string(), "__v": "0"}, None);
             match _ex.await {
                 Ok(_) => HttpResponse::Ok().json("success"),
                 Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
