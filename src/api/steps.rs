@@ -13,7 +13,8 @@ pub fn config(cfg: &mut web::ServiceConfig) {
             .service(get_step_by_id)
             .service(get_steps_by_historyid)
             .service(create_step)
-            .service(update_step),
+            .service(update_step)
+            .service(update_notarized_step),
     );
 }
 
@@ -162,22 +163,16 @@ async fn update_step(
 }
 
 #[put("/evm/{id}")]
-async fn update_evm_step(
+async fn update_notarized_step(
     _req: AuthorizationService,
     step: web::Json<NotarizeStep>,
     client: web::Data<Client>,
     id: web::Path<String>,
 ) -> HttpResponse {
     let id = id.into_inner();
-    let user_id = bson::oid::ObjectId::parse_str(_req.user).unwrap();
-    let user_id_from_doc = user_id_check(&client, &id, "steps".to_string())
-        .await
-        .unwrap();
-    if user_id.to_string() != user_id_from_doc {
-        return HttpResponse::Unauthorized().finish();
-    }
 
     if _req.isAdmin == false {
+        println!("not admin you punk!");
         return HttpResponse::Unauthorized().finish();
     }
 
@@ -196,7 +191,7 @@ async fn update_evm_step(
         None,
     );
     match _ex.await {
-        Ok(_) => HttpResponse::Ok().json("success update_history"),
+        Ok(_) => HttpResponse::Ok().json("success updated notarized step"),
         Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
     }
 }
