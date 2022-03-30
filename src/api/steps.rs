@@ -145,8 +145,8 @@ async fn update_step(
             "public": step.public,
             "featured": step.featured,
             "randomizeProof": step.randomizeProof.to_string(),
-             "uri": step.uri.to_string(),
-              "name": step.name.to_string(),
+            "uri": step.uri.to_string(),
+            "name": step.name.to_string(),
             "updatedAt": Utc::now(),
         }
     };

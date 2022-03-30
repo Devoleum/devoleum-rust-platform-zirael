@@ -1,8 +1,8 @@
 use crate::config::{Config, IConfig};
 use crate::middlewares::auth::AuthorizationService;
 use crate::models::response::{LoginResponse, Response};
-use crate::models::users::{Claims, FoundUserResponse, Login, Register, Token, User};
-use actix_web::{get, post, web, App, HttpResponse, HttpServer};
+use crate::models::users::{Claims, FoundUserResponse, Login, LoginUpdate, Register, Token, User};
+use actix_web::{get, post, put, web, App, HttpResponse, HttpServer};
 use blake2::{Blake2b512, Digest};
 use chrono::{DateTime, Duration, Utc};
 use jsonwebtoken::{decode, encode, Algorithm, DecodingKey, EncodingKey, Header, Validation};
@@ -15,8 +15,7 @@ pub fn config(cfg: &mut web::ServiceConfig) {
         web::scope("api/users")
             .service(get_merchant)
             .service(login)
-            .service(register_controller)
-            .service(user_informations),
+            .service(register_controller),
     );
 }
 
@@ -121,8 +120,41 @@ async fn login(user: web::Json<Login>, client: web::Data<Client>) -> HttpRespons
     }
 }
 
-#[get("/protected")]
-async fn user_informations(_req: AuthorizationService) -> HttpResponse {
-    println!("Starting protected {}", _req.user);
-    HttpResponse::Ok().json("user: ".to_string() + &_req.user)
+#[put("/{id}")]
+async fn update_user(
+    client: web::Data<Client>,
+    id: web::Path<String>,
+    user: web::Json<LoginUpdate>,
+    _req: AuthorizationService,
+) -> HttpResponse {
+    let id = id.into_inner();
+    let collection: Collection<Document> = client.database(DB_NAME).collection("users");
+    if user.password.is_empty() {
+        match collection
+            .update_one(
+                doc! { "_id": bson::oid::ObjectId::parse_str(&id).unwrap() },
+                doc! {"$set": doc! {"name": user.email.to_string(), "uri": user.uri.to_string() ,"updatedAt": Utc::now()}},
+                None,
+            )
+            .await
+        {
+            Ok(_) => HttpResponse::Ok().json("success"),
+            Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
+        }
+    } else {
+        let mut hasher = Blake2b512::new();
+        hasher.update(user.password.as_str());
+        let hash_pw: String = format!("{:x}", hasher.finalize());
+        match collection
+            .update_one(
+                doc! { "_id": bson::oid::ObjectId::parse_str(&id).unwrap() },
+                doc! {"$set": doc! {"password": hash_pw, "updatedAt": Utc::now()}},
+                None,
+            )
+            .await
+        {
+            Ok(_) => HttpResponse::Ok().json("success"),
+            Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
+        }
+    }
 }

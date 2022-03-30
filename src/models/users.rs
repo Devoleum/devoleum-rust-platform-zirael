@@ -63,3 +63,10 @@ pub struct Token {
 pub struct GetOwner {
     pub user: bson::oid::ObjectId,
 }
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct LoginUpdate {
+    pub email: String,
+    pub password: String,
+    pub uri: String,
+}
