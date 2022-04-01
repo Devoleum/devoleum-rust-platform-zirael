@@ -1,5 +1,5 @@
-use serde::{Deserialize, Serialize};
 use chrono::{DateTime, Utc};
+use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Step {
@@ -17,7 +17,8 @@ pub struct Step {
     pub name: String,
     pub uri: String,
     pub randomizeProof: String,
-    pub historyId: bson::oid::ObjectId,
+    #[serde(rename = "historyId")]
+    pub history_id: bson::oid::ObjectId,
     #[serde(with = "bson::serde_helpers::chrono_datetime_as_bson_datetime")]
     pub createdAt: DateTime<Utc>,
     #[serde(with = "bson::serde_helpers::chrono_datetime_as_bson_datetime")]
@@ -47,4 +48,15 @@ pub struct NotarizeStep {
     pub txurl: String,
     pub hash: String,
     pub chain_name: String,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct ListSteps {
+    #[serde(rename = "_id")]
+    pub id: bson::oid::ObjectId,
+    pub user: bson::oid::ObjectId,
+    pub name: String,
+    pub uri: String,
+    #[serde(rename = "historyId")]
+    pub history_id: bson::oid::ObjectId,
 }

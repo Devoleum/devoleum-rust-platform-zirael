@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 pub struct User {
     #[serde(rename = "_id")]
     pub id: bson::oid::ObjectId,
-    pub is_admin: bool,
+    pub isAdmin: bool,
     pub uri: String,
     pub name: String,
     pub email: String,
@@ -68,5 +68,10 @@ pub struct GetOwner {
 pub struct LoginUpdate {
     pub email: String,
     pub password: String,
+    pub uri: String,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct MerchantUri {
     pub uri: String,
 }

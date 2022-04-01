@@ -26,15 +26,15 @@ import {
   STEP_TOP_FAIL,
 } from '../constants/stepConstants'
 import { logout } from './userActions'
-import {getIterate, getOnce} from '../utils/fetchData'
+import { getIterate, getOnce } from '../utils/fetchData'
 
 export const listSteps = (historyId) => async (
   dispatch
 ) => {
   try {
     dispatch({ type: STEP_LIST_REQUEST })
-    let {data} = await axios.get(
-      `/api/history/${historyId}/steps`
+    let { data } = await axios.get(
+      `/api/steps/history/${historyId}`
     )
     data.data = await getIterate(data);
 
@@ -57,7 +57,7 @@ export const listStepDetails = (id) => async (dispatch) => {
   try {
     dispatch({ type: STEP_DETAILS_REQUEST })
 
-    let {data} = await axios.get(`/api/steps/${id}`)
+    let { data } = await axios.get(`/api/steps/${id}`)
     data.data = await getOnce(data);
     delete data.data.randomValue;
     delete data.data.thumbnail;
@@ -130,7 +130,7 @@ export const createStep = (historyId, step) => async (dispatch, getState) => {
       },
     }
 
-    const { data } = await axios.post( `/api/steps/history/${historyId}`, step, config)
+    const { data } = await axios.post(`/api/steps/history/${historyId}`, step, config)
 
     dispatch({
       type: STEP_CREATE_SUCCESS,

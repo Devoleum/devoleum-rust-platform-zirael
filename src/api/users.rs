@@ -1,12 +1,12 @@
 use crate::config::{Config, IConfig};
 use crate::middlewares::auth::AuthorizationService;
-use crate::models::response::{LoginResponse, Response};
-use crate::models::users::{Claims, FoundUserResponse, Login, LoginUpdate, Register, Token, User};
-use actix_web::{get, post, put, web, App, HttpResponse, HttpServer};
+use crate::models::response::LoginResponse;
+use crate::models::users::{Claims, FoundUserResponse, Login, LoginUpdate, MerchantUri, Register};
+use actix_web::{get, post, put, web, HttpResponse};
 use blake2::{Blake2b512, Digest};
 use chrono::{DateTime, Duration, Utc};
-use jsonwebtoken::{decode, encode, Algorithm, DecodingKey, EncodingKey, Header, Validation};
-use mongodb::{bson::doc, bson::Document, error::Error, Client, Collection};
+use jsonwebtoken::{encode, EncodingKey, Header};
+use mongodb::{bson::doc, bson::Document, Client, Collection};
 
 const DB_NAME: &str = "devoleumdb";
 
@@ -35,7 +35,7 @@ async fn find_user_with_email(
 #[get("/merchant/{id}")]
 async fn get_merchant(client: web::Data<Client>, id: web::Path<String>) -> HttpResponse {
     let id = id.into_inner();
-    let collection: Collection<User> = client.database(DB_NAME).collection("users");
+    let collection: Collection<MerchantUri> = client.database(DB_NAME).collection("users");
     match collection
         .find_one(
             doc! { "_id": bson::oid::ObjectId::parse_str(&id).unwrap() },
