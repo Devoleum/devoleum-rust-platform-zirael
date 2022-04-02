@@ -49,7 +49,7 @@ const HistoryScreen: React.FC = () => {
     try {
       const resp = await fetch(`/api/history/${id}`);
       const result: IHistory = await resp.json();
-      const history = (await getOnce(result, true)) as IHistory;
+      const history = (await getOnce(result, true)) as unknown as IHistory;
       setDevoleumHistory(history);
     } catch (error) {
       setError(error);

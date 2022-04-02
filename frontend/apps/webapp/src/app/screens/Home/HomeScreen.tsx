@@ -24,6 +24,7 @@ const HomeScreen: React.FC = () => {
       setHistories(histories);
     } catch (error) {
       setError(error);
+      console.log('error: ', error);
     }
     setLoading(false);
   };
