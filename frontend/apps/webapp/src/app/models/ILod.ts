@@ -7,5 +7,25 @@ export interface ILod {
   thumbnail: string;
   date?: string;
   network_link?: string;
-  merchant?: ILod;
+  merchant?: Merchant;
+}
+
+export interface MerchantWrapper {
+  uri: string;
+  name: string;
+  email: string;
+  data: Merchant;
+}
+
+export interface Merchant {
+  name: string;
+  description: string;
+  image: string;
+  thumbnail: string;
+  website_url: string;
+  network_name?: string;
+  network_link?: string;
+  network_description?: string;
+  network_image?: string;
+  network_thumbnail?: string;
 }

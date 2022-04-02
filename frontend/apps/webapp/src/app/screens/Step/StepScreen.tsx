@@ -3,9 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Image, ListGroup } from 'react-bootstrap';
 import Meta from '../../components/Meta';
-import Message from '../../components/Message';
 import Loader from '../../components/Loader';
-import { listStepDetails } from '../../actions/stepActions';
 import LocalizedStrings from 'react-localization';
 import Achievement from '../../components/Achievement/Achievement';
 //images
@@ -22,6 +20,9 @@ import git_off from '../../imgs/git_off.jpg';
 import git_on from '../../imgs/git_on.jpg';
 import hash_off from '../../imgs/hash_off.jpg';
 import hash_on from '../../imgs/hash_on.jpg';
+import { IStep } from '../../models/ISteps';
+import { getIterate, getOnce } from '../../utils/fetchData';
+import axios from 'axios';
 
 const strings = new LocalizedStrings({
   en: {
@@ -37,24 +38,42 @@ const strings = new LocalizedStrings({
 });
 
 const StepScreen = () => {
-  const dispatch = useDispatch();
   let { stepId } = useParams();
 
-  const stepDetails = useSelector((state: RootStateOrAny) => state.stepDetails);
-  const { loading, error, devoleumStep } = stepDetails;
+  const [devoleumStep, setDevoleumStep] = useState<IStep | any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    if (!devoleumStep._id || devoleumStep._id !== stepId) {
-      dispatch(listStepDetails(stepId));
+    getItems();
+  }, []);
+
+  const getItems = async () => {
+    try {
+      const result = await axios.get(`/api/steps/${stepId}`);
+      const step_data = await getOnce(result.data);
+      const step = { ...result.data, data: step_data };
+      setDevoleumStep(step);
+    } catch (error) {
+      setError(error);
     }
-  }, [dispatch]);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    getItems();
+  }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <>
       {loading ? (
         <Loader />
       ) : error ? (
-        <Message variant="danger">{error}</Message>
+        { error }
       ) : (
         <>
           {devoleumStep._id && (
