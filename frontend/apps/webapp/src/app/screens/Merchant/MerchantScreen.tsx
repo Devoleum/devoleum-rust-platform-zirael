@@ -25,7 +25,6 @@ const MerchantScreen = () => {
   const getDetails = async () => {
     try {
       const data = await getMerchant(id || '');
-      console.log(data);
       setMerchantData(data);
     } catch (error) {
       setError(error);

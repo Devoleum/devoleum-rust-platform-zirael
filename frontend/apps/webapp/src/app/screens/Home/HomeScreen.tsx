@@ -22,7 +22,6 @@ const HomeScreen: React.FC = () => {
       const result = await axios.get('/api/histories/public');
       const histories = (await getIterate(result.data, true)) as IHistory[];
       setHistories(histories);
-      console.log('histories: ', histories[0]);
     } catch (error) {
       setError(error);
       console.log('error: ', error);
