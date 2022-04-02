@@ -1,3 +1,9 @@
+export interface BasicData {
+  uri: string;
+  name: string;
+  data: ILod;
+}
+
 export interface ILod {
   name: string;
   description: string;
@@ -8,6 +14,12 @@ export interface ILod {
   date?: string;
   network_link?: string;
   merchant?: Merchant;
+}
+
+export interface BasicData {
+  uri: string;
+  name: string;
+  data: ILod;
 }
 
 export interface MerchantWrapper {

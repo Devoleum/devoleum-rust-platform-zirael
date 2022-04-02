@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Row, Col, Image, ListGroup } from 'react-bootstrap';
-import Meta from '../../components/Meta';
-import Loader from '../../components/Loader';
+import Meta from '../../components/Meta/Meta';
+import Loader from '../../components/Loader/Loader';
 import Product from '../../components/Product/Product';
 import LocalizedStrings from 'react-localization';
 import QRCode from 'react-qr-code';

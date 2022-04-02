@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Image, ListGroup } from 'react-bootstrap';
-import Meta from '../../components/Meta';
-import Loader from '../../components/Loader';
+import Meta from '../../components/Meta/Meta';
+import Loader from '../../components/Loader/Loader';
 import LocalizedStrings from 'react-localization';
 import Achievement from '../../components/Achievement/Achievement';
 //images

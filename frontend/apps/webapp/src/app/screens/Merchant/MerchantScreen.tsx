@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Image, ListGroup } from 'react-bootstrap';
-import Meta from '../../components/Meta';
+import Meta from '../../components/Meta/Meta';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
-import Loader from '../../components/Loader';
+import Loader from '../../components/Loader/Loader';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Product from '../../components/Product/Product';
 

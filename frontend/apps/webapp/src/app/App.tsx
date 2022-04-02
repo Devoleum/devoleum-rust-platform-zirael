@@ -2,8 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import { Container } from 'react-bootstrap';
-import Header from './components/Header';
-import Footer from './components/Footer';
+import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
 import HomeScreen from './screens/Home/HomeScreen';
 import HistoryScreen from './screens/History/HistoryScreen';
 import StepScreen from './screens/Step/StepScreen';

@@ -1,8 +1,9 @@
-import React from "react";
-import { ListGroup, Image, Row, Col } from "react-bootstrap";
-import Meta from "./Meta";
+import React from 'react';
+import { ListGroup, Image, Row, Col } from 'react-bootstrap';
+import { BasicData } from '../../models/ILod';
+import Meta from '../../components/Meta/Meta';
 
-const ItemInfo = ({ item }) => {
+const ItemInfo = (item: BasicData) => {
   return (
     <>
       {item.data && (
@@ -10,11 +11,7 @@ const ItemInfo = ({ item }) => {
           <Meta title={item.name} />
           <Row>
             <Col md={6}>
-              <Image
-                src={item.data.image}
-                alt={item.name}
-                fluid
-              />
+              <Image src={item.data.image} alt={item.name} fluid />
             </Col>
             <Col md={3}>
               <ListGroup variant="flush">
