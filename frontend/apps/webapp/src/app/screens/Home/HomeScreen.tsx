@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Product from '../../components/Product/Product';
-import Loader from '../../components/Loader';
-import Meta from '../../components/Meta';
+import Loader from '../../components/Loader/Loader';
+import Meta from '../../components/Meta/Meta';
 import LocalizedStrings from 'react-localization';
 import { IHistory } from '../../models/IHistory';
 import { getIterate } from '../../utils/fetchData';
@@ -22,7 +22,7 @@ const HomeScreen: React.FC = () => {
       const result = await axios.get('/api/histories/public');
       const histories = (await getIterate(result.data, true)) as IHistory[];
       setHistories(histories);
-      console.log('histories: ', histories);
+      console.log('histories: ', histories[0]);
     } catch (error) {
       setError(error);
       console.log('error: ', error);

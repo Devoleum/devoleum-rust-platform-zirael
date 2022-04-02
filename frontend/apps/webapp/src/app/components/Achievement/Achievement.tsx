@@ -1,6 +1,5 @@
 import React from 'react';
 import LocalizedStrings from 'react-localization';
-import { Row, Col, Image } from 'react-bootstrap';
 
 const strings = new LocalizedStrings({
   en: {
@@ -28,17 +27,18 @@ const Achievement = ({
   link = true,
   verifyLink,
 }: IProps) => {
+  console.log('args: ', label, text, img, img_off, link, verifyLink);
   if (!text) return null;
   return (
-    <Row style={{ marginBottom: '15px' }}>
-      <Col fluid={true} xs="auto" md="auto">
+    <div className="row" style={{ marginBottom: '15px' }}>
+      <div className="col col-md-auto">
         {text ? (
-          <Image src={img} style={{ width: '64px' }} />
+          <img src={img} style={{ width: '64px' }} />
         ) : (
-          <Image src={img_off} style={{ width: '64px' }} />
+          <img src={img_off} style={{ width: '64px' }} />
         )}
-      </Col>
-      <Col align="left">
+      </div>
+      <div className="col col-side">
         <strong
           style={{
             textTransform: 'capitalize',
@@ -67,6 +67,7 @@ const Achievement = ({
                 <p
                   style={{
                     wordBreak: 'break-word',
+                    marginTop: 0,
                   }}
                 >
                   {text}
@@ -77,8 +78,8 @@ const Achievement = ({
             <div>{strings.missing}</div>
           )}
         </div>
-      </Col>
-    </Row>
+      </div>
+    </div>
   );
 };
 

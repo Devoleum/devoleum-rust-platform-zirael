@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Row, Col, Image, ListGroup } from 'react-bootstrap';
-import Meta from '../../components/Meta';
-import Loader from '../../components/Loader';
+import Meta from '../../components/Meta/Meta';
+import Loader from '../../components/Loader/Loader';
 import Product from '../../components/Product/Product';
 import LocalizedStrings from 'react-localization';
 import QRCode from 'react-qr-code';
@@ -79,7 +78,7 @@ const HistoryScreen: React.FC = () => {
 
   return (
     <>
-      <Link className="btn btn-light my-3" to="/">
+      <Link className="btn btn__light" to="/">
         {strings.back}
       </Link>
       {loading ? (
@@ -94,17 +93,17 @@ const HistoryScreen: React.FC = () => {
                 title={devoleumHistory.data.name}
                 img_url={devoleumHistory.data.image}
               />
-              <Row style={{ marginBottom: '15px' }}>
-                <Col md={6}>
-                  <Image
+              <div className="row" style={{ marginBottom: '15px' }}>
+                <div className="col col-md-6">
+                  <img
                     src={devoleumHistory.data.image}
                     alt={devoleumHistory.data.name}
-                    fluid
+                    className="img-fluid"
                   />
-                </Col>
-                <Col md={6}>
-                  <ListGroup variant="flush">
-                    <ListGroup.Item>
+                </div>
+                <div className="col col-md-6">
+                  <div className="list-group list-group-flush">
+                    <div className="list-group-item">
                       <h3>{devoleumHistory.data.name}</h3>
                       {strings.by}{' '}
                       {devoleumHistory.data.merchant && (
@@ -112,8 +111,9 @@ const HistoryScreen: React.FC = () => {
                           {devoleumHistory.data.merchant.name}
                         </Link>
                       )}
-                    </ListGroup.Item>
-                    <ListGroup.Item>
+                    </div>
+
+                    <div className="list-group-item">
                       {devoleumHistory.data.description}
                       <br />
                       <br />
@@ -145,10 +145,10 @@ const HistoryScreen: React.FC = () => {
                           }
                         />
                       </div>
-                    </ListGroup.Item>
-                  </ListGroup>
-                </Col>
-              </Row>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <h3>{strings.title}</h3>
               {steps &&
                 steps.map((devoleumStep: any) => (

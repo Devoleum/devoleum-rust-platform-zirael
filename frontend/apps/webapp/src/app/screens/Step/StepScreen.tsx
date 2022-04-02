@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
-import { Row, Col, Image, ListGroup } from 'react-bootstrap';
-import Meta from '../../components/Meta';
-import Loader from '../../components/Loader';
+import Meta from '../../components/Meta/Meta';
+import Loader from '../../components/Loader/Loader';
 import LocalizedStrings from 'react-localization';
 import Achievement from '../../components/Achievement/Achievement';
 //images
@@ -79,7 +77,7 @@ const StepScreen = () => {
           {devoleumStep._id && (
             <Link
               to={'/history/' + devoleumStep.historyId['$oid']}
-              className="btn btn-light my-3"
+              className="btn btn__light"
             >
               {strings.back}
             </Link>
@@ -90,26 +88,26 @@ const StepScreen = () => {
                 title={devoleumStep.data.name}
                 img_url={devoleumStep.data.image}
               />
-              <Row style={{ marginBottom: '15px' }}>
-                <Col md={6}>
-                  <Image
+              <div className="row" style={{ marginBottom: '15px' }}>
+                <div className="col col-md-6">
+                  <img
                     src={devoleumStep.data.image}
                     alt={devoleumStep.data.name}
-                    fluid
+                    className="img-fluid"
                   />
-                </Col>
-                <Col md={6}>
+                </div>
+                <div className="col col-md-6">
                   <h3>{devoleumStep.data.name}</h3>
-                  <ListGroup variant="flush">
-                    <ListGroup.Item>
+                  <div className="list-group list-group-flush">
+                    <div className="list-group-item">
                       {devoleumStep.data.description}
-                    </ListGroup.Item>
-                  </ListGroup>
-                  <Row style={{ marginBottom: '15px' }}>
-                    <Col md={12}>
+                    </div>
+                  </div>
+                  <div className="row" style={{ marginBottom: '15px' }}>
+                    <div className="col col-md-12">
                       <h3>{strings.notarization}</h3>
-                      <ListGroup variant="flush">
-                        <ListGroup.Item>
+                      <div className="list-group list-group-flush">
+                        <div className="list-group-item">
                           <Achievement
                             label="JSON link"
                             text={devoleumStep.uri}
@@ -169,18 +167,18 @@ const StepScreen = () => {
                               devoleumStep._id['$oid']
                             }
                           />
-                        </ListGroup.Item>
-                      </ListGroup>
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <h3>{strings.title}</h3>
-              <Row style={{ marginBottom: '15px' }}>
-                <Col md={12}>
+              <div className="row" style={{ marginBottom: '15px' }}>
+                <div className="col col-md-12">
                   {Object.keys(devoleumStep.data).map((key, value) => (
-                    <ListGroup variant="flush">
-                      <ListGroup.Item>
+                    <div className="list-group list-group-flush">
+                      <div className="list-group-item">
                         <strong
                           style={{
                             textTransform: 'capitalize',
@@ -206,11 +204,11 @@ const StepScreen = () => {
                             <br />
                           </div>
                         }
-                      </ListGroup.Item>
-                    </ListGroup>
+                      </div>
+                    </div>
                   ))}
-                </Col>
-              </Row>
+                </div>
+              </div>
             </>
           )}
         </>
