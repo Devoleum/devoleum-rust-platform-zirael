@@ -90,23 +90,23 @@ const StepScreen = () => {
                 title={devoleumStep.data.name}
                 img_url={devoleumStep.data.image}
               />
-              <Row style={{ marginBottom: '15px' }}>
-                <Col md={6}>
+              <div className="row" style={{ marginBottom: '15px' }}>
+                <div className="col col-md-6">
                   <Image
                     src={devoleumStep.data.image}
                     alt={devoleumStep.data.name}
                     fluid
                   />
-                </Col>
-                <Col md={6}>
+                </div>
+                <div className="col col-md-6">
                   <h3>{devoleumStep.data.name}</h3>
                   <ListGroup variant="flush">
                     <ListGroup.Item>
                       {devoleumStep.data.description}
                     </ListGroup.Item>
                   </ListGroup>
-                  <Row style={{ marginBottom: '15px' }}>
-                    <Col md={12}>
+                  <div className="row" style={{ marginBottom: '15px' }}>
+                    <div className="col col-md-12">
                       <h3>{strings.notarization}</h3>
                       <ListGroup variant="flush">
                         <ListGroup.Item>
@@ -171,13 +171,13 @@ const StepScreen = () => {
                           />
                         </ListGroup.Item>
                       </ListGroup>
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <h3>{strings.title}</h3>
-              <Row style={{ marginBottom: '15px' }}>
-                <Col md={12}>
+              <div className="row" style={{ marginBottom: '15px' }}>
+                <div className="col col-md-12">
                   {Object.keys(devoleumStep.data).map((key, value) => (
                     <ListGroup variant="flush">
                       <ListGroup.Item>
@@ -209,8 +209,8 @@ const StepScreen = () => {
                       </ListGroup.Item>
                     </ListGroup>
                   ))}
-                </Col>
-              </Row>
+                </div>
+              </div>
             </>
           )}
         </>

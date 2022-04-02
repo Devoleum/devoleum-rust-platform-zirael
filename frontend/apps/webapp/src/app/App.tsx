@@ -1,7 +1,5 @@
-import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import { Container } from 'react-bootstrap';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import HomeScreen from './screens/Home/HomeScreen';
@@ -19,15 +17,15 @@ const App = () => {
   return (
     <Router>
       <Header />
-      <main className="py-3">
-        <Container>
+      <main>
+        <div className="container">
           <Routes>
             <Route path="/history/:id" element={<HistoryScreen />} />
             <Route path="/step/:stepId" element={<StepScreen />} />
             <Route path="/merchant/:id" element={<MerchantScreen />} />
             <Route path="/" element={<HomeScreen />} />
           </Routes>
-        </Container>
+        </div>
       </main>
       <Footer />
     </Router>

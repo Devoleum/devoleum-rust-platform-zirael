@@ -94,15 +94,15 @@ const HistoryScreen: React.FC = () => {
                 title={devoleumHistory.data.name}
                 img_url={devoleumHistory.data.image}
               />
-              <Row style={{ marginBottom: '15px' }}>
-                <Col md={6}>
+              <div className="row" style={{ marginBottom: '15px' }}>
+                <div className="col col-md-6">
                   <Image
                     src={devoleumHistory.data.image}
                     alt={devoleumHistory.data.name}
                     fluid
                   />
-                </Col>
-                <Col md={6}>
+                </div>
+                <div className="col col-md-6">
                   <ListGroup variant="flush">
                     <ListGroup.Item>
                       <h3>{devoleumHistory.data.name}</h3>
@@ -147,8 +147,8 @@ const HistoryScreen: React.FC = () => {
                       </div>
                     </ListGroup.Item>
                   </ListGroup>
-                </Col>
-              </Row>
+                </div>
+              </div>
               <h3>{strings.title}</h3>
               {steps &&
                 steps.map((devoleumStep: any) => (

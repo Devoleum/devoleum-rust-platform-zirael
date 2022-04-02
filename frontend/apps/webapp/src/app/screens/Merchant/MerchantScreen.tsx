@@ -55,11 +55,11 @@ const MerchantScreen = () => {
   return (
     <>
       <Meta title={merchantData.name} img_url={merchantData.image} />
-      <Row style={{ marginBottom: '15px' }}>
-        <Col md={6}>
+      <div className="row" style={{ marginBottom: '15px' }}>
+        <div className="col col-md-6">
           <Image src={merchantData.image} alt={merchantData.name} fluid />
-        </Col>
-        <Col md={6}>
+        </div>
+        <div className="col col-md-6">
           <ListGroup variant="flush">
             <ListGroup.Item>
               <h3>{merchantData.name}</h3>
@@ -71,11 +71,11 @@ const MerchantScreen = () => {
             </ListGroup.Item>
             <ListGroup.Item>{merchantData.description}</ListGroup.Item>
           </ListGroup>
-        </Col>
-      </Row>
+        </div>
+      </div>
       {merchantData.network_name && (
-        <Row className="align-items-center">
-          <Col>
+        <div className="row align-items-center">
+          <div className="col">
             <h3>Network</h3>
             <Product
               product={{
@@ -89,15 +89,15 @@ const MerchantScreen = () => {
               }}
               fullText={true}
             />
-          </Col>
-        </Row>
+          </div>
+        </div>
       )}
 
-      <Row className="align-items-center">
-        <Col>
+      <div className="row align-items-center">
+        <div className="col">
           <h3>{strings.sub}</h3>
-        </Col>
-      </Row>
+        </div>
+      </div>
       {loading ? (
         <Loader />
       ) : error ? (

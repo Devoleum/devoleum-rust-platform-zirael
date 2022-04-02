@@ -28,17 +28,18 @@ const Achievement = ({
   link = true,
   verifyLink,
 }: IProps) => {
+  console.log('args: ', label, text, img, img_off, link, verifyLink);
   if (!text) return null;
   return (
-    <Row style={{ marginBottom: '15px' }}>
-      <Col fluid={true} xs="auto" md="auto">
+    <div className="row" style={{ marginBottom: '15px' }}>
+      <div className="col">
         {text ? (
           <Image src={img} style={{ width: '64px' }} />
         ) : (
           <Image src={img_off} style={{ width: '64px' }} />
         )}
-      </Col>
-      <Col align="left">
+      </div>
+      <div className="col">
         <strong
           style={{
             textTransform: 'capitalize',
@@ -77,8 +78,8 @@ const Achievement = ({
             <div>{strings.missing}</div>
           )}
         </div>
-      </Col>
-    </Row>
+      </div>
+    </div>
   );
 };
 

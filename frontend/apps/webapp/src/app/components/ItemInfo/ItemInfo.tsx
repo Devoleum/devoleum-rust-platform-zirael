@@ -9,10 +9,10 @@ const ItemInfo = (item: BasicData) => {
       {item.data && (
         <>
           <Meta title={item.name} />
-          <Row>
-            <Col md={6}>
+          <div className="row">
+            <div className="col col-md-6">
               <Image src={item.data.image} alt={item.name} fluid />
-            </Col>
+            </div>
             <Col md={3}>
               <ListGroup variant="flush">
                 <ListGroup.Item>
@@ -22,8 +22,8 @@ const ItemInfo = (item: BasicData) => {
                   Description: {item.data.description}
                 </ListGroup.Item>
               </ListGroup>
-            </Col>
-          </Row>
+            </div>
+          </div>
           <br />
           <br />
         </>
