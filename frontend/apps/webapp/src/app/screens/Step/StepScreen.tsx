@@ -22,6 +22,7 @@ import hash_off from '../../imgs/hash_off.jpg';
 import hash_on from '../../imgs/hash_on.jpg';
 import { IStep } from '../../models/ISteps';
 import { getIterate, getOnce } from '../../utils/fetchData';
+import axios from 'axios';
 
 const strings = new LocalizedStrings({
   en: {
@@ -49,10 +50,10 @@ const StepScreen = () => {
 
   const getItems = async () => {
     try {
-      const resp = await fetch(`/api/step/${stepId}`);
-      const result: IStep = await resp.json();
-      result.data = await getOnce(result);
-      setDevoleumStep(result);
+      const result = await axios.get(`/api/steps/${stepId}`);
+      const step_data = await getOnce(result.data);
+      const step = { ...result.data, data: step_data };
+      setDevoleumStep(step);
     } catch (error) {
       setError(error);
     }

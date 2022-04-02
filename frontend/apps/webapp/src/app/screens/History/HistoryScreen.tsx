@@ -9,6 +9,7 @@ import QRCode from 'react-qr-code';
 import { IStep } from '../../models/ISteps';
 import { getIterate, getOnce } from '../../utils/fetchData';
 import { IHistory } from '../../models/IHistory';
+import axios, { Axios } from 'axios';
 
 const strings = new LocalizedStrings({
   en: {
@@ -27,17 +28,18 @@ const strings = new LocalizedStrings({
 
 const HistoryScreen: React.FC = () => {
   let { id } = useParams();
+  console.log('id: ', id);
 
   const [devoleumHistory, setDevoleumHistory] = useState<IHistory | any>(null);
   const [steps, setSteps] = useState<IStep[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  const getItems = async () => {
+  const getItems = async (id: string) => {
     try {
-      const resp = await fetch(`/api/steps/history/${id}`);
-      const result: IStep[] = await resp.json();
-      const steps = (await getIterate(result, true)) as IStep[];
+      const result = await axios.get(`/api/steps/history/${id}`);
+      const steps = (await getIterate(result.data, true)) as IStep[];
+      console.log('steps: ', steps);
       setSteps(steps);
     } catch (error) {
       setError(error);
@@ -45,21 +47,24 @@ const HistoryScreen: React.FC = () => {
     setLoading(false);
   };
 
-  const getHistory = async () => {
+  const getHistory = async (id: string) => {
     try {
-      const resp = await fetch(`/api/history/${id}`);
-      const result: IHistory = await resp.json();
-      const history = (await getOnce(result, true)) as unknown as IHistory;
+      const result = await axios.get(`/api/histories/${id}`);
+      const history_data = (await getOnce(
+        result.data,
+        true
+      )) as unknown as IHistory;
+      const history = { ...result.data, data: history_data };
       setDevoleumHistory(history);
+      console.log('history: ', history);
     } catch (error) {
       setError(error);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
     //RETROFIT PREVIOUS PLATFORM IDS, REMOVE IT ON DEVELOPMENT
-    let old_id = (() => {
+    let retro_id: any = (() => {
       switch (id) {
         case '1':
           return '5fff6a9a42be9f00049e8fbe';
@@ -71,11 +76,8 @@ const HistoryScreen: React.FC = () => {
           return id;
       }
     })();
-
-    if (!devoleumHistory._id || devoleumHistory._id['$oid'] !== old_id) {
-      getHistory();
-      getItems();
-    }
+    getHistory(retro_id);
+    getItems(retro_id);
   }, []);
 
   return (
@@ -89,7 +91,7 @@ const HistoryScreen: React.FC = () => {
         { error }
       ) : (
         <>
-          {devoleumHistory._id && devoleumHistory.data && (
+          {devoleumHistory && devoleumHistory._id && devoleumHistory.data && (
             <>
               <Meta
                 title={devoleumHistory.data.name}

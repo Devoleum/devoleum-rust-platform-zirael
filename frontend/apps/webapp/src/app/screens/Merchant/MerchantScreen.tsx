@@ -8,7 +8,8 @@ import Product from '../../components/Product/Product';
 
 import LocalizedStrings from 'react-localization';
 import { IHistory } from '../../models/IHistory';
-import { getIterate } from '../../utils/fetchData';
+import { getIterate, getOnce } from '../../utils/fetchData';
+import axios from 'axios';
 
 const MerchantScreen = () => {
   let { id } = useParams();
@@ -25,9 +26,9 @@ const MerchantScreen = () => {
 
   const getMerchant = async () => {
     try {
-      const resp = await fetch(`/api/merchant/${id}`);
-      const result: any = await resp.json();
-      setMerchantData(result);
+      const result = await axios.get(`/api/merchant/${id}`);
+      const merch = await axios.get(result.data);
+      setMerchantData(merch);
     } catch (error) {
       setError(error);
     }
@@ -36,9 +37,8 @@ const MerchantScreen = () => {
 
   const getItems = async () => {
     try {
-      const resp = await fetch(`/api/users/merchant/${id}`);
-      const result: IHistory[] = await resp.json();
-      const histories = (await getIterate(result)) as IHistory[];
+      const result = await axios.get(`/api/users/merchant/${id}`);
+      const histories = (await getIterate(result.data)) as IHistory[];
       setHistories(histories);
     } catch (error) {
       setError(error);

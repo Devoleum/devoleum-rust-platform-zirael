@@ -6,6 +6,7 @@ import Meta from '../../components/Meta';
 import LocalizedStrings from 'react-localization';
 import { IHistory } from '../../models/IHistory';
 import { getIterate } from '../../utils/fetchData';
+import axios from 'axios';
 
 const HomeScreen: React.FC = () => {
   const [histories, setHistories] = useState<IHistory[]>([]);
@@ -18,10 +19,10 @@ const HomeScreen: React.FC = () => {
 
   const getItems = async () => {
     try {
-      const resp = await fetch('/api/history/public');
-      const result: IHistory[] = await resp.json();
-      const histories = (await getIterate(result, true)) as IHistory[];
+      const result = await axios.get('/api/histories/public');
+      const histories = (await getIterate(result.data, true)) as IHistory[];
       setHistories(histories);
+      console.log('histories: ', histories);
     } catch (error) {
       setError(error);
       console.log('error: ', error);

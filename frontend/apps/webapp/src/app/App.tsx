@@ -22,9 +22,9 @@ const App = () => {
       <main className="py-3">
         <Container>
           <Routes>
-            {/*             <Route path="/history/:id" element={<HistoryScreen />} />
+            <Route path="/history/:id" element={<HistoryScreen />} />
             <Route path="/step/:stepId" element={<StepScreen />} />
-            <Route path="/merchant/:id" element={<MerchantScreen />} /> */}
+            <Route path="/merchant/:id" element={<MerchantScreen />} />
             <Route path="/" element={<HomeScreen />} />
           </Routes>
         </Container>
