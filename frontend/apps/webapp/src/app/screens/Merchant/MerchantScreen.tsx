@@ -2,19 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Row, Col, Image, ListGroup } from 'react-bootstrap';
 import Meta from '../../components/Meta';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
-import Message from '../../components/Message';
 import Loader from '../../components/Loader';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Product from '../../components/Product/Product';
 
-import { listHistoriesByMerchant } from '../../actions/historyActions';
-import { getMerchantDetails } from '../../actions/userActions';
 import LocalizedStrings from 'react-localization';
 import { IHistory } from '../../models/IHistory';
 
 const MerchantScreen = () => {
   let { id } = useParams();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const historyListByMerchant = useSelector(
     (state: RootStateOrAny) => state.historyListByMerchant
@@ -30,7 +26,7 @@ const MerchantScreen = () => {
   useEffect(() => {
     dispatch(getMerchantDetails(id || ''));
     dispatch(listHistoriesByMerchant(id));
-  }, [dispatch, navigate]);
+  }, []);
 
   return (
     <>
@@ -81,11 +77,11 @@ const MerchantScreen = () => {
       {loading ? (
         <Loader />
       ) : error ? (
-        <Message variant="danger">{error}</Message>
+        { error }
       ) : (
         <>
           {histories.length === 0 ? (
-            <Message variant="info">No histories found</Message>
+            'No histories found'
           ) : (
             <>
               {histories.map((devoleumHistory: any) => (

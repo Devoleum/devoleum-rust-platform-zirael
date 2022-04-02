@@ -13,7 +13,7 @@ const strings = new LocalizedStrings({
 
 export interface IProps {
   label: string;
-  text: string;
+  text: string | null;
   img: string;
   img_off: string;
   link?: boolean;
@@ -22,7 +22,7 @@ export interface IProps {
 
 const Achievement = ({
   label,
-  text,
+  text = '',
   img,
   img_off,
   link = true,
