@@ -1,9 +1,9 @@
 function getInterfaceLanguage() {
-  const defaultLang = "en-US";
-  if (typeof navigator === "undefined") {
+  const defaultLang = 'en-US';
+  if (typeof navigator === 'undefined') {
     return defaultLang;
   }
-  const nav = navigator; // eslint-disable-line no-undef
+  const nav: any = navigator; // eslint-disable-line no-undef
   if (nav) {
     if (nav.language) {
       return nav.language;
@@ -23,31 +23,32 @@ function getInterfaceLanguage() {
 
 export function returnLang() {
   const language = getInterfaceLanguage();
-  const idx = language.indexOf("-");
+  const idx = language.indexOf('-');
   let auxLang = idx >= 0 ? language.substring(0, idx) : language;
-  auxLang = auxLang ? auxLang : "en";
+  auxLang = auxLang ? auxLang : 'en';
   return auxLang;
 }
 
-const returnMatchLang = async (uri) => {
+const returnMatchLang = async (uri: string) => {
   const language = getInterfaceLanguage();
-  const idx = language.indexOf("-");
+  const idx = language.indexOf('-');
   let auxLang = idx >= 0 ? language.substring(0, idx) : language;
-  auxLang = auxLang ? auxLang : "en";
+  auxLang = auxLang ? auxLang : 'en';
 
   let response = await fetch(uri);
   let fetchedData = await response.json();
   let localizedData;
-    if (fetchedData.hasOwnProperty(auxLang)) {
-      localizedData = fetchedData[auxLang];
-    }
-    else if (!fetchedData.hasOwnProperty(auxLang) && fetchedData.hasOwnProperty("en") ) {
-      localizedData = fetchedData.en;
-    }
-    else {
-      localizedData = fetchedData;
-    }
-  return {localizedData, fetchedData}
-}
+  if (fetchedData.hasOwnProperty(auxLang)) {
+    localizedData = fetchedData[auxLang];
+  } else if (
+    !fetchedData.hasOwnProperty(auxLang) &&
+    fetchedData.hasOwnProperty('en')
+  ) {
+    localizedData = fetchedData.en;
+  } else {
+    localizedData = fetchedData;
+  }
+  return { localizedData, fetchedData };
+};
 
 export default returnMatchLang;
