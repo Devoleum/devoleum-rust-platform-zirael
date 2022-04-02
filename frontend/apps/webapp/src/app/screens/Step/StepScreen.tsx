@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
-import { Row, Col, Image, ListGroup } from 'react-bootstrap';
 import Meta from '../../components/Meta/Meta';
 import Loader from '../../components/Loader/Loader';
 import LocalizedStrings from 'react-localization';
@@ -79,7 +77,7 @@ const StepScreen = () => {
           {devoleumStep._id && (
             <Link
               to={'/history/' + devoleumStep.historyId['$oid']}
-              className="btn btn-light my-3"
+              className="btn btn__light"
             >
               {strings.back}
             </Link>
@@ -92,24 +90,24 @@ const StepScreen = () => {
               />
               <div className="row" style={{ marginBottom: '15px' }}>
                 <div className="col col-md-6">
-                  <Image
+                  <img
                     src={devoleumStep.data.image}
                     alt={devoleumStep.data.name}
-                    fluid
+                    className="img-fluid"
                   />
                 </div>
                 <div className="col col-md-6">
                   <h3>{devoleumStep.data.name}</h3>
-                  <ListGroup variant="flush">
-                    <ListGroup.Item>
+                  <div className="list-group list-group-flush">
+                    <div className="list-group-item">
                       {devoleumStep.data.description}
-                    </ListGroup.Item>
-                  </ListGroup>
+                    </div>
+                  </div>
                   <div className="row" style={{ marginBottom: '15px' }}>
                     <div className="col col-md-12">
                       <h3>{strings.notarization}</h3>
-                      <ListGroup variant="flush">
-                        <ListGroup.Item>
+                      <div className="list-group list-group-flush">
+                        <div className="list-group-item">
                           <Achievement
                             label="JSON link"
                             text={devoleumStep.uri}
@@ -169,8 +167,8 @@ const StepScreen = () => {
                               devoleumStep._id['$oid']
                             }
                           />
-                        </ListGroup.Item>
-                      </ListGroup>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -179,8 +177,8 @@ const StepScreen = () => {
               <div className="row" style={{ marginBottom: '15px' }}>
                 <div className="col col-md-12">
                   {Object.keys(devoleumStep.data).map((key, value) => (
-                    <ListGroup variant="flush">
-                      <ListGroup.Item>
+                    <div className="list-group list-group-flush">
+                      <div className="list-group-item">
                         <strong
                           style={{
                             textTransform: 'capitalize',
@@ -206,8 +204,8 @@ const StepScreen = () => {
                             <br />
                           </div>
                         }
-                      </ListGroup.Item>
-                    </ListGroup>
+                      </div>
+                    </div>
                   ))}
                 </div>
               </div>

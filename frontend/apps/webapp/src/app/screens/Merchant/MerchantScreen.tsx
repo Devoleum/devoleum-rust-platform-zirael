@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Image, ListGroup } from 'react-bootstrap';
 import Meta from '../../components/Meta/Meta';
-import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import Loader from '../../components/Loader/Loader';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Product from '../../components/Product/Product';
 
 import LocalizedStrings from 'react-localization';
@@ -57,20 +55,25 @@ const MerchantScreen = () => {
       <Meta title={merchantData.name} img_url={merchantData.image} />
       <div className="row" style={{ marginBottom: '15px' }}>
         <div className="col col-md-6">
-          <Image src={merchantData.image} alt={merchantData.name} fluid />
+          <img
+            src={merchantData.image}
+            alt={merchantData.name}
+            className="img-fluid"
+          />
         </div>
         <div className="col col-md-6">
-          <ListGroup variant="flush">
-            <ListGroup.Item>
+          <div className="list-group list-group-flush">
+            <div className="list-group-item">
               <h3>{merchantData.name}</h3>
               <strong>
                 <a href={merchantData.website_url} target="_blank">
                   Website link
                 </a>
               </strong>
-            </ListGroup.Item>
-            <ListGroup.Item>{merchantData.description}</ListGroup.Item>
-          </ListGroup>
+            </div>
+
+            <div className="list-group-item">{merchantData.description}</div>
+          </div>
         </div>
       </div>
       {merchantData.network_name && (

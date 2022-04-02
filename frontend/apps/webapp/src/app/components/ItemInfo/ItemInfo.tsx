@@ -11,17 +11,19 @@ const ItemInfo = (item: BasicData) => {
           <Meta title={item.name} />
           <div className="row">
             <div className="col col-md-6">
-              <Image src={item.data.image} alt={item.name} fluid />
+              <img src={item.data.image} alt={item.name} className="img-fluid" />
             </div>
             <Col md={3}>
-              <ListGroup variant="flush">
-                <ListGroup.Item>
+              <div className="list-group list-group-flush">
+                <div className="list-group-item">
                   <h3>{item.data.name}</h3>
-                </ListGroup.Item>
-                <ListGroup.Item>
+                </div>
+
+                <div className="list-group-item">
                   Description: {item.data.description}
-                </ListGroup.Item>
-              </ListGroup>
+                </div>
+
+              </div>
             </div>
           </div>
           <br />

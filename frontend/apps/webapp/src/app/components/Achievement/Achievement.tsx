@@ -1,6 +1,5 @@
 import React from 'react';
 import LocalizedStrings from 'react-localization';
-import { Row, Col, Image } from 'react-bootstrap';
 
 const strings = new LocalizedStrings({
   en: {
@@ -32,14 +31,14 @@ const Achievement = ({
   if (!text) return null;
   return (
     <div className="row" style={{ marginBottom: '15px' }}>
-      <div className="col">
+      <div className="col col-md-auto">
         {text ? (
-          <Image src={img} style={{ width: '64px' }} />
+          <img src={img} style={{ width: '64px' }} />
         ) : (
-          <Image src={img_off} style={{ width: '64px' }} />
+          <img src={img_off} style={{ width: '64px' }} />
         )}
       </div>
-      <div className="col">
+      <div className="col col-side">
         <strong
           style={{
             textTransform: 'capitalize',
@@ -68,6 +67,7 @@ const Achievement = ({
                 <p
                   style={{
                     wordBreak: 'break-word',
+                    marginTop: 0,
                   }}
                 >
                   {text}
