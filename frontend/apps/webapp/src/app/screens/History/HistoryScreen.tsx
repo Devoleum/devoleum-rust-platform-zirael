@@ -28,7 +28,6 @@ const strings = new LocalizedStrings({
 
 const HistoryScreen: React.FC = () => {
   let { id } = useParams();
-  console.log('id: ', id);
 
   const [devoleumHistory, setDevoleumHistory] = useState<IHistory | any>(null);
   const [steps, setSteps] = useState<IStep[]>([]);
@@ -39,7 +38,6 @@ const HistoryScreen: React.FC = () => {
     try {
       const result = await axios.get(`/api/steps/history/${id}`);
       const steps = (await getIterate(result.data, true)) as IStep[];
-      console.log('steps: ', steps);
       setSteps(steps);
     } catch (error) {
       setError(error);
@@ -56,7 +54,6 @@ const HistoryScreen: React.FC = () => {
       )) as unknown as IHistory;
       const history = { ...result.data, data: history_data };
       setDevoleumHistory(history);
-      console.log('history: ', history);
     } catch (error) {
       setError(error);
     }
@@ -155,7 +152,7 @@ const HistoryScreen: React.FC = () => {
               <h3>{strings.title}</h3>
               {steps &&
                 steps.map((devoleumStep: any) => (
-                  <>
+                  <div key={devoleumStep._id}>
                     {devoleumStep.data && (
                       <Link
                         to={`/step/${devoleumStep._id['$oid']}`}
@@ -164,7 +161,7 @@ const HistoryScreen: React.FC = () => {
                         <Product product={devoleumStep} />
                       </Link>
                     )}
-                  </>
+                  </div>
                 ))}
             </>
           )}

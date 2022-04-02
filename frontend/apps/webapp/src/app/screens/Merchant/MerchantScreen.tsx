@@ -8,7 +8,7 @@ import Product from '../../components/Product/Product';
 
 import LocalizedStrings from 'react-localization';
 import { IHistory } from '../../models/IHistory';
-import { getIterate, getOnce } from '../../utils/fetchData';
+import { getIterate, getMerchant, getOnce } from '../../utils/fetchData';
 import axios from 'axios';
 
 const MerchantScreen = () => {
@@ -20,31 +20,37 @@ const MerchantScreen = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    getMerchant();
+    getDetails();
     getItems();
   }, []);
 
-  const getMerchant = async () => {
+  const getDetails = async () => {
     try {
-      const result = await axios.get(`/api/merchant/${id}`);
-      const merch = await axios.get(result.data);
-      setMerchantData(merch);
+      const data = await getMerchant(id || '');
+      console.log(data);
+      setMerchantData(data);
     } catch (error) {
       setError(error);
+      console.log(error);
     }
     setLoading(false);
   };
 
   const getItems = async () => {
     try {
-      const result = await axios.get(`/api/users/merchant/${id}`);
+      const result = await axios.get(`/api/histories/merchant/${id}`);
       const histories = (await getIterate(result.data)) as IHistory[];
       setHistories(histories);
     } catch (error) {
       setError(error);
+      console.log(error);
     }
     setLoading(false);
   };
+
+  if (!merchantData || loading) {
+    return <Loader />;
+  }
 
   return (
     <>
@@ -103,7 +109,7 @@ const MerchantScreen = () => {
           ) : (
             <>
               {histories.map((devoleumHistory: any) => (
-                <>
+                <div key={devoleumHistory._id}>
                   {devoleumHistory.data && (
                     <Link
                       to={`/history/${devoleumHistory._id['$oid']}`}
@@ -112,7 +118,7 @@ const MerchantScreen = () => {
                       <Product product={devoleumHistory} />
                     </Link>
                   )}
-                </>
+                </div>
               ))}
             </>
           )}

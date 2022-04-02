@@ -64,7 +64,7 @@ const HomeScreen: React.FC = () => {
         <>
           {histories &&
             histories.map((devoleumHistory: any) => (
-              <>
+              <div key={devoleumHistory._id}>
                 {devoleumHistory.data && (
                   <Link
                     to={`/history/${devoleumHistory._id['$oid']}`}
@@ -73,7 +73,7 @@ const HomeScreen: React.FC = () => {
                     <Product product={devoleumHistory} />
                   </Link>
                 )}
-              </>
+              </div>
             ))}
         </>
       )}
