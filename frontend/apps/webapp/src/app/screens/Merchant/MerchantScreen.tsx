@@ -8,25 +8,43 @@ import Product from '../../components/Product/Product';
 
 import LocalizedStrings from 'react-localization';
 import { IHistory } from '../../models/IHistory';
+import { getIterate } from '../../utils/fetchData';
 
 const MerchantScreen = () => {
   let { id } = useParams();
-  const navigate = useNavigate();
-  const historyListByMerchant = useSelector(
-    (state: RootStateOrAny) => state.historyListByMerchant
-  );
 
-  const { loading, error, histories } = historyListByMerchant;
+  const [merchantData, setMerchantData] = useState<any>(null);
+  const [histories, setHistories] = useState<IHistory[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  const merchantDetails = useSelector(
-    (state: RootStateOrAny) => state.merchantDetails
-  );
-  const { merchantData } = merchantDetails;
-  console.log(merchantData);
   useEffect(() => {
-    dispatch(getMerchantDetails(id || ''));
-    dispatch(listHistoriesByMerchant(id));
+    getMerchant();
+    getItems();
   }, []);
+
+  const getMerchant = async () => {
+    try {
+      const resp = await fetch(`/api/merchant/${id}`);
+      const result: any = await resp.json();
+      setMerchantData(result);
+    } catch (error) {
+      setError(error);
+    }
+    setLoading(false);
+  };
+
+  const getItems = async () => {
+    try {
+      const resp = await fetch(`/api/users/merchant/${id}`);
+      const result: IHistory[] = await resp.json();
+      const histories = (await getIterate(result)) as IHistory[];
+      setHistories(histories);
+    } catch (error) {
+      setError(error);
+    }
+    setLoading(false);
+  };
 
   return (
     <>

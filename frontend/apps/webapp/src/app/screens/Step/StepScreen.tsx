@@ -39,7 +39,7 @@ const strings = new LocalizedStrings({
 const StepScreen = () => {
   let { stepId } = useParams();
 
-  const [devoleumStep, setDevoleumStep] = useState<IStep>(null);
+  const [devoleumStep, setDevoleumStep] = useState<IStep | any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 

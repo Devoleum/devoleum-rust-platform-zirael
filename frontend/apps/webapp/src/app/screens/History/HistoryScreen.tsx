@@ -28,7 +28,7 @@ const strings = new LocalizedStrings({
 const HistoryScreen: React.FC = () => {
   let { id } = useParams();
 
-  const [devoleumHistory, setDevoleumHistory] = useState<IHistory>(null);
+  const [devoleumHistory, setDevoleumHistory] = useState<IHistory | any>(null);
   const [steps, setSteps] = useState<IStep[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -50,6 +50,7 @@ const HistoryScreen: React.FC = () => {
       const resp = await fetch(`/api/history/${id}`);
       const result: IHistory = await resp.json();
       const history = (await getOnce(result, true)) as IHistory;
+      setDevoleumHistory(history);
     } catch (error) {
       setError(error);
     }
