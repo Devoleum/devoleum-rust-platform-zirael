@@ -14,11 +14,7 @@ use std::env;
 async fn main() -> std::io::Result<()> {
     let uri = std::env::var("MONGODB_URI").unwrap_or_else(|_| "mongodb://localhost:27017".into());
 
-    dotenv::dotenv().expect("Failed to read .env file");
-    println!(
-        "Email backend: {}",
-        env::var("FOO").expect("EMAIL_BACKEND not found")
-    );
+    dotenv::dotenv().expect("Failed to read env ");
     let PORT = std::env::var("PORT")
         .unwrap_or_else(|_| "8000".to_string())
         .parse()
