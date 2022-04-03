@@ -78,17 +78,23 @@ async fn register_controller(user: web::Json<Register>, client: web::Data<Client
     }
 }
 
+fn verify(password: &str, hash: &str) -> bool {
+    let parsed = PasswordHash::new(&hash);
+    if parsed.is_err() {
+        return false;
+    }
+    Argon2::default()
+        .verify_password(password.as_bytes(), &parsed.unwrap())
+        .is_ok()
+}
+
 #[post("/login")]
 async fn login(user: web::Json<Login>, client: web::Data<Client>) -> HttpResponse {
     println!("Starting login");
 
     match find_user_with_email(client, user.email.to_string()).await {
         Ok(Some(x)) => {
-            let parsed_hash = PasswordHash::new(&user.password).unwrap();
-            let password_verifier =
-                Argon2::default().verify_password(&x.password.as_bytes(), &parsed_hash);
-
-            if password_verifier.is_ok() {
+            if verify(&user.password, &x.password) {
                 let mut _date: DateTime<Utc>;
                 let _config: Config = Config {};
                 let _var = _config.get_config_with_key("SECRET_KEY");
