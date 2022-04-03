@@ -49,6 +49,11 @@ async fn get_merchant(client: web::Data<Client>, id: web::Path<String>) -> HttpR
     }
 }
 
+use argon2::{
+    password_hash::{rand_core::OsRng, PasswordHash, PasswordHasher, PasswordVerifier, SaltString},
+    Argon2,
+};
+
 #[post("/")]
 async fn register_controller(user: web::Json<Register>, client: web::Data<Client>) -> HttpResponse {
     let user = user.into_inner();
@@ -58,10 +63,12 @@ async fn register_controller(user: web::Json<Register>, client: web::Data<Client
         Ok(Some(_)) => HttpResponse::Ok()
             .json("This e-mail is using by some user, please enter another e-mail."),
         Ok(None) => {
-            let mut hasher = Blake2b512::new();
-            hasher.update(user.password.as_str());
-            let hash_pw: String = format!("{:x}", hasher.finalize());
-            let _ex = collection.insert_one(doc! {"isAdmin": false, "uri": user.uri, "name": user.name, "email": user.email, "password": hash_pw,  "createdAt": Utc::now().to_string(), "updatedAt": Utc::now().to_string(), "__v": "0"}, None);
+            let salt = SaltString::generate(&mut OsRng);
+            let argon2 = Argon2::default();
+            let password_hash: PasswordHash = argon2
+                .hash_password(&user.password.as_bytes(), &salt)
+                .unwrap();
+            let _ex = collection.insert_one(doc! {"isAdmin": false, "uri": user.uri, "name": user.name, "email": user.email, "password": password_hash.to_string(),  "createdAt": Utc::now().to_string(), "updatedAt": Utc::now().to_string(), "__v": "0"}, None);
             match _ex.await {
                 Ok(_) => HttpResponse::Ok().json("success"),
                 Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
@@ -77,47 +84,43 @@ async fn login(user: web::Json<Login>, client: web::Data<Client>) -> HttpRespons
 
     match find_user_with_email(client, user.email.to_string()).await {
         Ok(Some(x)) => {
-            let mut hasher = Blake2b512::new();
-            hasher.update(user.password.as_str());
-            let hash_pw: String = format!("{:x}", hasher.finalize());
-            println!("Starting login some");
-            if x.password == hash_pw {
-                // JWT
+            let parsed_hash = PasswordHash::new(&user.password).unwrap();
+            let password_verifier =
+                Argon2::default().verify_password(&x.password.as_bytes(), &parsed_hash);
+
+            if password_verifier.is_ok() {
+                let mut _date: DateTime<Utc>;
                 let _config: Config = Config {};
                 let _var = _config.get_config_with_key("SECRET_KEY");
                 let key = _var.as_bytes();
-
-                let mut _date: DateTime<Utc>;
-                // Remember Me
                 if !user.remember_me {
                     _date = Utc::now() + Duration::hours(1);
                 } else {
                     _date = Utc::now() + Duration::days(365);
                 }
-                let my_claims = Claims {
+                let claims = Claims {
                     id: x.id,
                     isAdmin: x.isAdmin,
                     sub: user.email.to_string(),
                     exp: _date.timestamp() as usize,
                 };
-                let token = encode(
-                    &Header::default(),
-                    &my_claims,
-                    &EncodingKey::from_secret(key),
-                )
-                .unwrap();
-                let obj = LoginResponse {
+                let token =
+                    encode(&Header::default(), &claims, &EncodingKey::from_secret(key)).unwrap();
+                HttpResponse::Ok().json(LoginResponse {
+                    token: token,
                     status: true,
-                    token,
-                    message: "You have successfully logged in.".to_string(),
-                };
-                HttpResponse::Ok().json(obj)
+                    message: "Login success".to_string(),
+                })
             } else {
-                HttpResponse::InternalServerError().body("error")
+                HttpResponse::Ok().json(LoginResponse {
+                    message: "Login failed".to_string(),
+                    status: false,
+                    token: "".to_string(),
+                })
             }
         }
-        Ok(None) => HttpResponse::InternalServerError().body("not found"),
-        Err(err) => HttpResponse::InternalServerError().body(err.to_string() + " error login"),
+        Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
+        Ok(None) => HttpResponse::Ok().json("Invalid email"),
     }
 }
 
