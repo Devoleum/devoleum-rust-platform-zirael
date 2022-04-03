@@ -3,7 +3,6 @@ use crate::middlewares::auth::AuthorizationService;
 use crate::models::response::LoginResponse;
 use crate::models::users::{Claims, FoundUserResponse, Login, LoginUpdate, MerchantUri, Register};
 use actix_web::{get, post, put, web, HttpResponse};
-use blake2::{Blake2b512, Digest};
 use chrono::{DateTime, Duration, Utc};
 use jsonwebtoken::{encode, EncodingKey, Header};
 use mongodb::{bson::doc, bson::Document, Client, Collection};
@@ -153,13 +152,15 @@ async fn update_user(
             Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
         }
     } else if user.email.is_empty() && user.uri.is_empty() {
-        let mut hasher = Blake2b512::new();
-        hasher.update(user.password.as_str());
-        let hash_pw: String = format!("{:x}", hasher.finalize());
+        let salt = SaltString::generate(&mut OsRng);
+        let argon2 = Argon2::default();
+        let password_hash: PasswordHash = argon2
+            .hash_password(&user.password.as_bytes(), &salt)
+            .unwrap();
         match collection
             .update_one(
                 doc! { "_id": bson::oid::ObjectId::parse_str(&id).unwrap() },
-                doc! {"$set": doc! {"password": hash_pw, "updatedAt": Utc::now()}},
+                doc! {"$set": doc! {"password": password_hash.to_string(), "updatedAt": Utc::now()}},
                 None,
             )
             .await
