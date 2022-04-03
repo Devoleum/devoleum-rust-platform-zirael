@@ -16,7 +16,8 @@ pub fn config(cfg: &mut web::ServiceConfig) {
             .service(get_merchant)
             .service(login)
             .service(register_controller)
-            .service(update_user),
+            .service(update_user)
+            .service(protected),
     );
 }
 
@@ -169,4 +170,9 @@ async fn update_user(
     } else {
         HttpResponse::InternalServerError().body("bad request update user")
     }
+}
+
+#[get("/protected")]
+async fn protected(_req: AuthorizationService, _data: web::Data<Client>) -> HttpResponse {
+    HttpResponse::Ok().json("protected")
 }
