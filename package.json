@@ -1,0 +1,21 @@
+{
+  "name": "devoleum-rust-platform-zirael",
+  "version": "1.0.0",
+  "description": "The devoleum web app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "cd frontend && yarn && npx nx build webapp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Devoleum/devoleum-rust-platform-zirael.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Devoleum/devoleum-rust-platform-zirael/issues"
+  },
+  "homepage": "https://github.com/Devoleum/devoleum-rust-platform-zirael#readme"
+}
