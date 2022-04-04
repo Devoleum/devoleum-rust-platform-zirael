@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "cd frontend && npm install --global yarn && yarn && yarn build"
+    "build": "cd frontend && npm install --global yarn && yarn && cat nx.json && npx nx build webapp --configuration=production"
   },
   "repository": {
     "type": "git",
