@@ -1,7 +1,7 @@
 {
   "npmScope": "devoleum",
   "affected": {
-    "defaultBase": "master"
+    "defaultBase": "main"
   },
   "cli": {
     "defaultCollection": "@nrwl/react"
