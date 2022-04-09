@@ -26,7 +26,7 @@ const strings = new LocalizedStrings({
 });
 
 const HistoryScreen: React.FC = () => {
-  let { id } = useParams();
+  const { id } = useParams();
 
   const [devoleumHistory, setDevoleumHistory] = useState<IHistory | any>(null);
   const [steps, setSteps] = useState<IStep[]>([]);
@@ -60,7 +60,7 @@ const HistoryScreen: React.FC = () => {
 
   useEffect(() => {
     //RETROFIT PREVIOUS PLATFORM IDS, REMOVE IT ON DEVELOPMENT
-    let retro_id: any = (() => {
+    const retro_id: any = (() => {
       switch (id) {
         case '1':
           return '5fff6a9a42be9f00049e8fbe';

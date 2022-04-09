@@ -10,7 +10,7 @@ import { getIterate, getMerchant, getOnce } from '../../utils/fetchData';
 import axios from 'axios';
 
 const MerchantScreen = () => {
-  let { id } = useParams();
+  const { id } = useParams();
 
   const [merchantData, setMerchantData] = useState<any>(null);
   const [histories, setHistories] = useState<IHistory[]>([]);

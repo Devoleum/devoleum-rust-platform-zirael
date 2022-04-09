@@ -1,20 +1,17 @@
 import { IHistory } from '../models/IHistory';
-import { Merchant, MerchantWrapper } from '../models/ILod';
+import { Merchant } from '../models/ILod';
 import { IStep } from '../models/ISteps';
 import returnMatchLang from './returnMatchLang';
 
 const getMerchant = async (id: string): Promise<Merchant> => {
   const url = `/api/users/merchant/${id}`;
   const response = await fetch(url);
-  let uri: string = await response.json();
+  const uri: string = await response.json();
   const { localizedData } = await returnMatchLang(uri);
   return localizedData;
 };
 
-const getOnce = async (
-  item: IHistory | IStep,
-  getMerchant: boolean = false
-) => {
+const getOnce = async (item: IHistory | IStep, getMerchant = false) => {
   const { localizedData } = await returnMatchLang(item.uri);
   item.data = localizedData;
 
@@ -30,7 +27,7 @@ const getOnce = async (
 
 const getIterate = async (
   items: IHistory[] | IStep[],
-  getMerchant: boolean = false
+  getMerchant = false
 ): Promise<IHistory[] | IStep[]> => {
   await Promise.all(
     items.map(async (el: IHistory | IStep, i: number) => {

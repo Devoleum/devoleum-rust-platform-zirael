@@ -35,8 +35,8 @@ const returnMatchLang = async (uri: string) => {
   let auxLang = idx >= 0 ? language.substring(0, idx) : language;
   auxLang = auxLang ? auxLang : 'en';
 
-  let response = await fetch(uri);
-  let fetchedData = await response.json();
+  const response = await fetch(uri);
+  const fetchedData = await response.json();
   let localizedData;
   if (fetchedData.hasOwnProperty(auxLang)) {
     localizedData = fetchedData[auxLang];
