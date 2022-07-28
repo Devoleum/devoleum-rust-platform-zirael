@@ -9,10 +9,17 @@ use api::{histories, steps, users};
 use mongodb::Client;
 extern crate dotenv;
 use std::env;
+use std::fs;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     let uri = std::env::var("MONGODB_URI").unwrap_or_else(|_| "mongodb://localhost:27017".into());
+
+    let paths = fs::read_dir("../../dist/apps/webapp/").unwrap();
+
+    for path in paths {
+        println!("Name: {}", path.unwrap().path().display())
+    }
 
     dotenv::dotenv().expect("Failed to read env ");
     let PORT = std::env::var("PORT")
@@ -36,7 +43,7 @@ async fn main() -> std::io::Result<()> {
             .configure(api::histories::config)
             .configure(api::steps::config)
             .service(
-                Files::new("/", "../dist/apps/webapp/")
+                Files::new("/", "../../dist/apps/webapp/")
                     .index_file("index.html")
                     .show_files_listing(),
             )
