@@ -14,6 +14,13 @@
         }
       }
     },
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["cargo run --release"],
+        "cwd": "apps/backend"
+      }
+    },
     "test": {
       "executor": "@nxrs/cargo:test",
       "options": {}

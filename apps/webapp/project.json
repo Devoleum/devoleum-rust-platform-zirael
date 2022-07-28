@@ -1,5 +1,4 @@
 {
-  "root": "apps/webapp",
   "sourceRoot": "apps/webapp/src",
   "projectType": "application",
   "targets": {
@@ -34,6 +33,12 @@
           "namedChunks": false,
           "extractLicenses": true,
           "vendorChunk": false
+        },
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
         }
       }
     },
@@ -49,8 +54,12 @@
         "production": {
           "buildTarget": "webapp:build:production",
           "hmr": false
+        },
+        "development": {
+          "buildTarget": "webapp:build:development"
         }
-      }
+      },
+      "defaultConfiguration": "development"
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
@@ -63,7 +72,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/apps/webapp"],
       "options": {
-        "jestConfig": "apps/webapp/jest.config.js",
+        "jestConfig": "apps/webapp/jest.config.ts",
         "passWithNoTests": true
       }
     },
