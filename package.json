@@ -5,7 +5,6 @@
   "proxy": "http://localhost:8000",
   "scripts": {
     "nx": "nx",
-    "start": "cd ./apps/backend && cargo run --release",
     "build": "yarn nx build webapp",
     "test": "nx test",
     "lint": "nx lint"
