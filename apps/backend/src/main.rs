@@ -5,23 +5,19 @@ mod models;
 use actix_cors::Cors;
 use actix_files::Files;
 use actix_web::{web, App, HttpServer};
-use api::{histories, steps, users};
 use mongodb::Client;
 extern crate dotenv;
-use std::env;
-use std::fs;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     let uri = std::env::var("MONGODB_URI").unwrap_or_else(|_| "mongodb://localhost:27017".into());
 
-    dotenv::dotenv().expect("Failed to read env ");
-    let PORT = std::env::var("PORT")
+    let port = std::env::var("PORT")
         .unwrap_or_else(|_| "8000".to_string())
         .parse()
         .expect("PORT must be a number");
 
-    println!("Starting server port: {}", PORT);
+    println!("Starting server port: {}", port);
 
     let client = Client::with_uri_str(uri).await.expect("failed to connect");
     HttpServer::new(move || {
@@ -42,7 +38,7 @@ async fn main() -> std::io::Result<()> {
                     .show_files_listing(),
             )
     })
-    .bind(("0.0.0.0", PORT))?
+    .bind(("0.0.0.0", port))?
     .run()
     .await
 }

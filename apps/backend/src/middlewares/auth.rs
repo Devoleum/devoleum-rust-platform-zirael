@@ -7,7 +7,7 @@ use jsonwebtoken::{decode, Algorithm, DecodingKey, Validation};
 
 pub struct AuthorizationService {
     pub user: String,
-    pub isAdmin: bool,
+    pub is_admin: bool,
 }
 
 impl FromRequest for AuthorizationService {
@@ -30,7 +30,7 @@ impl FromRequest for AuthorizationService {
                 ) {
                     Ok(_token) => ok(AuthorizationService {
                         user: _token.claims.id.to_string(),
-                        isAdmin: _token.claims.isAdmin,
+                        is_admin: _token.claims.isAdmin,
                     }),
                     Err(_e) => err(ErrorUnauthorized("invalid token!")),
                 }

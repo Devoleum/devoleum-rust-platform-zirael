@@ -1,6 +1,6 @@
 use crate::middlewares::auth::AuthorizationService;
 use crate::models::users::GetOwner;
-use crate::models::{steps::ListSteps, steps::NotarizeStep, steps::PostStep, steps::Step};
+use crate::models::{steps::ListSteps, steps::NotarizeStep, steps::PostStep};
 use actix_web::{get, post, put, web, HttpResponse};
 use chrono::Utc;
 use mongodb::{bson::doc, bson::Document, Client, Collection};
@@ -168,7 +168,7 @@ async fn update_notarized_step(
 ) -> HttpResponse {
     let id = id.into_inner();
 
-    if _req.isAdmin == false {
+    if _req.is_admin == false {
         println!("not admin you punk!");
         return HttpResponse::Unauthorized().finish();
     }
