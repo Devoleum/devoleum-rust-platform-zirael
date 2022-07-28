@@ -1,5 +1,5 @@
 [package]
-name = "devoleum-rust-platform-zirael"
+name = "backend"
 version = "0.1.0"
 authors = ["Lorenzo Zaccagnini <devoleum@tutanota.com>, Elisa Romondia <devoleum@tutanota.com>"]
 edition = "2018"
