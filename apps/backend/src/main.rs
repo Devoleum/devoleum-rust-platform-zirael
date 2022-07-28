@@ -17,10 +17,6 @@ async fn main() -> std::io::Result<()> {
 
     let paths = fs::read_dir("../../dist/apps/webapp/").unwrap();
 
-    for path in paths {
-        println!("Name: {}", path.unwrap().path().display())
-    }
-
     dotenv::dotenv().expect("Failed to read env ");
     let PORT = std::env::var("PORT")
         .unwrap_or_else(|_| "8000".to_string())

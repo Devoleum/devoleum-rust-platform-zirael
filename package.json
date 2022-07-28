@@ -5,7 +5,7 @@
   "proxy": "http://localhost:8000",
   "scripts": {
     "nx": "nx",
-    "start": "nx serve",
+    "start": "npx nx serve backend",
     "build": "yarn nx build webapp",
     "test": "nx test",
     "lint": "nx lint",
