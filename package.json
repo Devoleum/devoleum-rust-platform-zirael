@@ -6,7 +6,7 @@
   "scripts": {
     "nx": "nx",
     "start": "nx serve",
-    "build": "yarn nx build webapp && yarn nx serve backend",
+    "build": "yarn nx build webapp",
     "test": "nx test",
     "lint": "nx lint",
     "webapp:build": "npm run build webapp"
