@@ -1,6 +1,6 @@
 use crate::middlewares::auth::AuthorizationService;
 use crate::models::users::GetOwner;
-use crate::models::{steps::NotarizeStep, steps::PostStep, steps::Step};
+use crate::models::{steps::ListSteps, steps::NotarizeStep, steps::PostStep};
 use actix_web::{get, post, put, web, HttpResponse};
 use chrono::Utc;
 use mongodb::{bson::doc, bson::Document, Client, Collection};
@@ -39,7 +39,7 @@ async fn get_step_by_id(client: web::Data<Client>, id: web::Path<String>) -> Htt
 async fn get_steps_by_historyid(client: web::Data<Client>, id: web::Path<String>) -> HttpResponse {
     use futures_util::StreamExt;
     let id = id.into_inner();
-    let collection: Collection<Step> = client.database(DB_NAME).collection("steps");
+    let collection: Collection<ListSteps> = client.database(DB_NAME).collection("steps");
     let mut cursor = collection
         .find(
             doc! {"historyId": bson::oid::ObjectId::parse_str(&id).unwrap()},

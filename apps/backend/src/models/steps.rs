@@ -66,16 +66,8 @@ pub struct ListSteps {
     pub randomizeProof: String,
     #[serde(rename = "test_eth_notarization")]
     pub test_eth_notarization: String,
-    #[serde(rename = "main_algo_notarization")]
-    pub main_algo_notarization: String,
     #[serde(rename = "polygon_matic_notarization")]
     pub polygon_matic_notarization: String,
-    #[serde(rename = "main_eth_notarization")]
-    pub main_eth_notarization: String,
-    #[serde(rename = "test_algo_notarization")]
-    pub test_algo_notarization: String,
-    #[serde(rename = "bitcoin_notarization")]
-    pub bitcoin_notarization: String,
     #[serde(rename = "polygon_matic_v2_notarization")]
     pub polygon_matic_v2_notarization: String,
     #[serde(rename = "sepolia_test_eth_notarization")]
