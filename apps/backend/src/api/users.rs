@@ -14,7 +14,7 @@ pub fn config(cfg: &mut web::ServiceConfig) {
         web::scope("api/users")
             .service(get_merchant)
             .service(login)
-            //.service(register_controller)
+            .service(register_controller)
             .service(update_user)
             .service(protected),
     );
