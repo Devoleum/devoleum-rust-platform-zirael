@@ -59,4 +59,5 @@ pub struct ListSteps {
     pub uri: String,
     #[serde(rename = "historyId")]
     pub history_id: bson::oid::ObjectId,
+    pub randomizeProof: String,
 }
