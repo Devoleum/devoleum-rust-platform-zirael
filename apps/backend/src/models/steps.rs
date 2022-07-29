@@ -65,11 +65,11 @@ pub struct ListSteps {
     pub history_id: bson::oid::ObjectId,
     pub randomizeProof: String,
     #[serde(rename = "test_eth_notarization")]
-    pub test_eth_notarization: String,
+    pub test_eth_notarization: Option<String>,
     #[serde(rename = "polygon_matic_notarization")]
-    pub polygon_matic_notarization: String,
+    pub polygon_matic_notarization: Option<String>,
     #[serde(rename = "polygon_matic_v2_notarization")]
-    pub polygon_matic_v2_notarization: String,
+    pub polygon_matic_v2_notarization: Option<String>,
     #[serde(rename = "sepolia_test_eth_notarization")]
-    pub sepolia_test_eth_notarization: String,
+    pub sepolia_test_eth_notarization: Option<String>,
 }
