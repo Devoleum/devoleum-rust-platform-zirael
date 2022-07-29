@@ -32,6 +32,10 @@ pub struct Step {
     pub main_algo_notarization: String,
     #[serde(rename = "polygon_matic_notarization")]
     pub polygon_matic_notarization: String,
+    #[serde(rename = "polygon_matic_v2_notarization")]
+    pub polygon_matic_v2_notarization: String,
+    #[serde(rename = "sepolia_test_eth_notarization")]
+    pub sepolia_test_eth_notarization: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
