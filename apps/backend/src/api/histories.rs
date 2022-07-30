@@ -1,16 +1,16 @@
 use crate::middlewares::auth::AuthorizationService;
 use crate::models::histories::{History, PostHistory};
+use crate::models::users::GetOwner;
 use actix_web::{get, post, put, web, HttpResponse};
 use chrono::Utc;
 use futures::future::{err, ok, Ready};
 use mongodb::{bson::doc, bson::Document, Client, Collection};
-use crate::models::users::GetOwner;
 
 const DB_NAME: &str = "devoleumdb";
 
 pub fn config(cfg: &mut web::ServiceConfig) {
     cfg.service(
-        web::scope("api/histories")
+        web::scope("/histories")
             .service(get_public_histories)
             .service(get_history_by_id)
             .service(get_histories_by_merchant)

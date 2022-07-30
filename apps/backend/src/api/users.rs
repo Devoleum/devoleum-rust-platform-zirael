@@ -11,7 +11,7 @@ const DB_NAME: &str = "devoleumdb";
 
 pub fn config(cfg: &mut web::ServiceConfig) {
     cfg.service(
-        web::scope("api/users")
+        web::scope("/users")
             .service(get_merchant)
             .service(login)
             //.service(register_controller)

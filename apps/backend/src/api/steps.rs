@@ -9,7 +9,7 @@ const DB_NAME: &str = "devoleumdb";
 
 pub fn config(cfg: &mut web::ServiceConfig) {
     cfg.service(
-        web::scope("api/steps")
+        web::scope("/steps")
             .service(get_step_by_id)
             .service(get_steps_by_historyid)
             .service(create_step)
