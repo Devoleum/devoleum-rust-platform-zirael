@@ -123,6 +123,16 @@ const StepScreen = () => {
                           />
                           <Achievement
                             label="Polygon Matic"
+                            text={devoleumStep.polygon_matic_v2_notarization}
+                            img={matic_on}
+                            img_off={eth_main_off}
+                            verifyLink={
+                              'https://eth.devoleum.com/' +
+                              devoleumStep._id['$oid']
+                            }
+                          />
+                          <Achievement
+                            label="Polygon Matic"
                             text={devoleumStep.polygon_matic_notarization}
                             img={matic_on}
                             img_off={eth_main_off}
