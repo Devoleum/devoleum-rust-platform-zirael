@@ -158,6 +158,16 @@ const StepScreen = () => {
                             }
                           />
                           <Achievement
+                            label="Ethereum 2 Sepolia"
+                            text={devoleumStep.sepolia_test_eth_notarization}
+                            img={eth_test_on}
+                            img_off={eth_test_off}
+                            verifyLink={
+                              'https://eth.devoleum.com/' +
+                              devoleumStep._id['$oid']
+                            }
+                          />
+                          <Achievement
                             label="Algorand TestNet"
                             text={devoleumStep.test_algo_notarization}
                             img={algo_test_on}
