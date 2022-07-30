@@ -135,7 +135,7 @@ const HistoryScreen: React.FC = () => {
 
                       <br />
                       <div style={{ textAlign: 'center' }}>
-                        {/*                         <QRCode
+                        <QRCode
                           size={140}
                           bgColor="#84B62B"
                           fgColor="#014940"
@@ -143,7 +143,7 @@ const HistoryScreen: React.FC = () => {
                             'https://app.devoleum.com/history/' +
                             devoleumHistory._id['$oid']
                           }
-                        /> */}
+                        />
                       </div>
                     </div>
                   </div>
