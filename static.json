@@ -1,0 +1,7 @@
+{
+  "root": "dist/apps/webapp",
+  "clean_urls": false,
+  "routes": {
+    "/**": "index.html"
+  }
+}
