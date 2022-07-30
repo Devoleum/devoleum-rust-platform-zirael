@@ -188,7 +188,17 @@ async fn update_notarized_step(
         None,
     );
     match _ex.await {
-        Ok(_) => HttpResponse::Ok().json("success updated notarized step"),
+        Ok(_) => match collection
+            .find_one(
+                doc! { "_id": bson::oid::ObjectId::parse_str(&id).unwrap() },
+                None,
+            )
+            .await
+        {
+            Ok(Some(result)) => HttpResponse::Ok().json(result),
+            Ok(None) => HttpResponse::NotFound().body(format!("No step found with id {}", id)),
+            Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
+        },
         Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
     }
 }
