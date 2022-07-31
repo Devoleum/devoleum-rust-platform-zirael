@@ -19,7 +19,7 @@ import git_on from '../../imgs/git_on.jpg';
 import hash_off from '../../imgs/hash_off.jpg';
 import hash_on from '../../imgs/hash_on.jpg';
 import { IStep } from '../../models/ISteps';
-import { getIterate, getOnce } from '../../utils/fetchData';
+import { getOnce } from '../../utils/fetchData';
 import axios from 'axios';
 
 const strings = new LocalizedStrings({
@@ -127,7 +127,7 @@ const StepScreen = () => {
                             img={matic_on}
                             img_off={eth_main_off}
                             verifyLink={
-                              'https://eth.devoleum.com/' +
+                              'https://verifier.devoleum.com/evm/' +
                               devoleumStep._id['$oid']
                             }
                           />
@@ -137,7 +137,7 @@ const StepScreen = () => {
                             img={algo_main_on}
                             img_off={algo_main_off}
                             verifyLink={
-                              'https://algo.devoleum.com/main/' +
+                              'https://verifier.devoleum.com/algorand/' +
                               devoleumStep._id['$oid']
                             }
                           />
@@ -153,7 +153,7 @@ const StepScreen = () => {
                             img={eth_test_on}
                             img_off={eth_test_off}
                             verifyLink={
-                              'https://eth.devoleum.com/' +
+                              'https://verifier.devoleum.com/evm/' +
                               devoleumStep._id['$oid']
                             }
                           />
