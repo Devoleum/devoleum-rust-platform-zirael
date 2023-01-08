@@ -38,7 +38,8 @@ RUN groupadd --gid 3434 vibbioinfocore \
 
 # IMAGE CUSTOMISATIONS
 
-USER vibbioinfocore
+USER node
+WORKDIR /home/node
 RUN mkdir "${HOME}/.npm" \
     && mkdir "${HOME}/.npm/lib" \
     && npm config set prefix "${HOME}/.npm"
@@ -49,20 +50,18 @@ RUN RUSTUP_URL="https://sh.rustup.rs" \
   && curl --silent --show-error --location --fail --retry 3 --proto '=https' --tlsv1.2 --output /tmp/rustup-linux-install.sh $RUSTUP_URL \
   && bash /tmp/rustup-linux-install.sh -y
 
-RUN /home/vibbioinfocore/.cargo/bin/rustup target add x86_64-pc-windows-msvc
+RUN /home/node/.cargo/bin/rustup target add x86_64-pc-windows-msvc
 
-ENV PATH /home/vibbioinfocore/.npm/bin:/home/vibbioinfocore/.cargo/bin:${PATH}
+ENV PATH /home/node/.npm/bin:/home/node/.cargo/bin:${PATH}
 
 CMD rustc --version && echo -n "Node:"; node --version
 
 # copy the files from the host to the container
-WORKDIR /app
-COPY package.json ./
+COPY --chown=node:node . .
 
 # install dependencies
 RUN yarn
 
-COPY . .
 
 
 
@@ -72,5 +71,7 @@ RUN npx nx build webapp
 # build the backend
 RUN npx nx build backend
 
+#Expose port 8000
+EXPOSE 8000
 
 
