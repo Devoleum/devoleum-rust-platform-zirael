@@ -67,10 +67,10 @@ COPY . .
 
 
 # build the frontend
-RUN nx build webapp
+RUN npx nx build webapp
 
 # build the backend
-RUN nx serve backend
+RUN npx nx serve backend
 
 
 
