@@ -70,7 +70,7 @@ COPY . .
 RUN npx nx build webapp
 
 # build the backend
-RUN npx nx serve backend
+RUN npx nx build backend
 
 
 
