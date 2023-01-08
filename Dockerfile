@@ -57,7 +57,7 @@ CMD rustc --version && echo -n "Node:"; node --version
 
 # copy the files from the host to the container
 WORKDIR /app
-COPY package.json yarn.lock ./
+COPY package.json ./
 
 # install dependencies
 RUN yarn
