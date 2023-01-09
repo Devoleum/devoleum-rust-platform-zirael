@@ -1,4 +1,22 @@
-[workspace]
-members = [
-    "apps/backend"
-]
+[package]
+name = "devoleum_backend"
+version = "0.1.0"
+authors = ["Lorenzo Zaccagnini <devoleum@tutanota.com>, Elisa Romondia <devoleum@tutanota.com>"]
+edition = "2018"
+license = "MIT"
+
+[dependencies]
+actix-web = "4"
+mongodb = "2.0.0"
+serde = { version = "1.0", features = ["derive"] }
+bson = { version ="2.1.0", features = ["chrono-0_4"] }
+actix-files = "0.6.0"
+futures-util = "0.3.21"
+actix-cors = "0.6.1"
+dotenv = "0.15.0"
+jsonwebtoken = "8.0.1"
+envfile = "0.2.1"
+chrono = "0.4.19"
+futures = "0.3"
+argon2 = "0.4.0"
+rand_core = { version = "0.6", features = ["std"] }
